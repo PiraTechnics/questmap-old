@@ -1,0 +1,15 @@
+Developer Notes
+
+11/16/22
+- Secret_key is exposed by default, this is an issue. Fix as per: https://stackoverflow.com/questions/64208678/hiding-secret-key-in-django-project-on-github-after-uploading-project
+
+- NOTE: Django has a tool to generate random secret keys if needed. Run in shell:
+	from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())
+
+- We will also need to turn off debug mode in settings.py when ready to move to production (dw about this for now, just make note)
+
+- Whenever we install a new dependency in our venv, make sure to update requirements.txt:
+	pip install <whatever>
+	pip freeze > requirements.txt
+
+- Uninstalling apps is a pain in the ass. There's a process to follow, to ensure your files and database aren't FUBAR: https://www.delftstack.com/howto/django/django-remove-app/
