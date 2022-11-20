@@ -13,3 +13,7 @@ Developer Notes
 	pip freeze > requirements.txt
 
 - Uninstalling apps is a pain in the ass. There's a process to follow, to ensure your files and database aren't FUBAR: https://www.delftstack.com/howto/django/django-remove-app/
+
+11/19/22
+- Got basic image uploading/display working, tho can only add/remove from admin panel. New 'maps' app added, will pare down notes to be separate app, should be able to see these on their own if possible
+- Cleaned up Readme a bit

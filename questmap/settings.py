@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # QuestMap Apps
     'notes',
+    'maps',
 
     # Django Apps
     'django.contrib.admin',

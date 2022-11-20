@@ -15,17 +15,20 @@ To set up this project on your own environment, do the following:
 	python -m venv env
 	source env/bin/activate
 
-3. Install dependencies into active virtual environment
-	pip -r requirements.txt
+3. Install dependencies into active virtual environment:
+	pip install -r requirements.txt
 
-4. Create a .env file with a dummy secret key
+4. Create a .env file with a dummy secret key:
 	 echo "SECRET_KEY=dummykey" > .env
 
-5. Create the database
+5. Create the database:
 	python manage.py migrate
 
-6. Generate a unique secret key using django's shell and replace dummy file with output
+6. Generate a unique secret key using django's shell and replace dummy key with output:
 	echo "SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())') > .env
 
-7. Run the server
+7. Run the server:
 	python manage.py runserver
+
+For Admin management, you'll need to create a Superuser:
+	python manage.py createsuperuser
