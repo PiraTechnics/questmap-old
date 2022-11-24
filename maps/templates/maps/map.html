@@ -1,0 +1,16 @@
+{% extends 'maps/base.html' %}
+{% block content %}
+
+<img src="{{ map.map_image.url }}">
+
+<p>Locations:</p>
+<ul>
+	{% for location in locations %}
+		<li>
+			<p>{{ location.title }}</p>
+		</li>
+	{% empty %}
+		<li>There are no locations for this map yet.</li>
+	{% endfor %}
+</ul>
+{% endblock content %}

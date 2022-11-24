@@ -17,3 +17,7 @@ Developer Notes
 11/19/22
 - Got basic image uploading/display working, tho can only add/remove from admin panel. New 'maps' app added, will pare down notes to be separate app, should be able to see these on their own if possible
 - Cleaned up Readme a bit
+
+11/20/22
+- Added Location Model, trying to figure out how to set the x and y of the location within the map (likely requires getting the x and y of a mouseclick, within an acceptable range)
+ - Will need to start working with Javascript, to get client side stuff
