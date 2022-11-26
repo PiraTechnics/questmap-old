@@ -21,3 +21,7 @@ Developer Notes
 11/20/22
 - Added Location Model, trying to figure out how to set the x and y of the location within the map (likely requires getting the x and y of a mouseclick, within an acceptable range)
  - Will need to start working with Javascript, to get client side stuff
+
+
+ Likely solution for setting a space for a location (coordinate range, circle):
+ https://www.w3schools.com/html/html_images_imagemap.asp

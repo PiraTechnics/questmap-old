@@ -2,7 +2,11 @@
 {% block content %}
 
 <img src="{{ map.map_image.url }}">
-
+<p>Dimensions:</p>
+<p>
+	Height = {{ map.image_height }}
+	Width = {{ map.image_width }}
+</p>
 <p>Locations:</p>
 <ul>
 	{% for location in locations %}
