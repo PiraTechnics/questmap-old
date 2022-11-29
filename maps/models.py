@@ -15,8 +15,9 @@ class Location(models.Model):
 	"""A Location on a map, that we can point to"""
 	map = models.ForeignKey(Map, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200)
-	#x_coordinate = models.IntegerField(Map.map_image.height_field)
-	#y_coordinate = models.IntegerField(Map.map_image.width_field)
+	text = models.TextField()
+	xCoord = models.IntegerField()
+	yCoord = models.IntegerField()
 
 	def __str__(self):
 		return self.title

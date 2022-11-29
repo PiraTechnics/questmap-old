@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Map
+from .models import Map, Location
 
 def index(request):
 	return render(request, "maps/index.html")
@@ -16,3 +16,9 @@ def map(request, map_id):
 	locations = map.location_set.order_by('title')
 	context = {'map': map, 'locations': locations}
 	return render(request, 'maps/map.html', context)
+
+def location(request, location_id):
+	"""Show a specific location for a map"""
+	location = Location.objects.get(id=location_id)
+	context = {'location': location}
+	return render(request, 'maps/location.html', context)
