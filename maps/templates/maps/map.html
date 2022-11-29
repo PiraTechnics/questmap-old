@@ -1,44 +1,38 @@
 {% extends 'maps/base.html' %}
 {% block content %}
 
+{% load static %}
+<script src="{% static 'map.js' %}"></script>
+<link rel="stylesheet" href="{% static 'map.css' %}">
+
+<!-- Import Jquery and Maphilight pluglin -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js">
+</script>
+
+<!-- Maphilight functionality -->
+<script type="text/javascript">
+  $(function() {
+    $('.map').maphilight();
+  });
+</script>
+
 <p id="displayArea">Coordinates</p>
 
-<div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()">
-	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}">
+<div class="brightness" id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()">
+	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}" class=map>
 
 	<map name ="{{ map.map_title }}">
  		{% for location in locations %}
-			<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},10" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}" onmousemove="foundLoc(this.id)">
+			<div class="maparea">
+				<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},10" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}">
+
+				<!--onmousemove="foundLoc(this.id)">-->
+			</div>
 		{% endfor %}
 	</map>
 </div>
-
-
- <script>
-	function foundLoc(id){
-		// Finds a location on the map and gives its name and coordinates
-		position = document.getElementById(id).coords.split(",");
-		posX = position[0];
-		posY = position[1];
-		alert(id + " is at: " + posX + "," + posY);
-	}
-
-	function trackCoords(e){
-		// Gets the coordinates of the mouse pointer on a given element
-		// See: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    	rect = e.target.getBoundingClientRect();
-    	x = e.clientX - rect.left; // X coordinate within the element
-    	y = e.clientY - rect.top; // Y coordinate within the element
-    	cursor="Coordinates on Map (x,y): (" + x + "," + y + ")" ;
-    	document.getElementById("displayArea").innerHTML=cursor
-    	document.getElementById("displayArea2").innerHTML=cursor
-    }
-    
-    function stopTracking(){
-    	document.getElementById("displayArea").innerHTML="Coordinates";
-    	document.getElementById("displayArea2").innerHTML="Coordinates";
-    }
-   </script>
 
 <p id="displayArea2"></p>
 <p id="displayArea3"></p>
