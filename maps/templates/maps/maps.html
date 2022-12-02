@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html>
-
 {% extends "maps/base.html" %}
-
 
 {% block content %}
 
@@ -17,6 +13,6 @@
 	</ul>
 </body>
 
-{% endblock content %}
+<a href="{% url 'maps:new_map' %}">Add a new map</a>
 
-</html>
+{% endblock content %}

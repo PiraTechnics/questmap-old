@@ -20,7 +20,7 @@
 
 <p id="displayArea">Coordinates</p>
 
-<div class="brightness" id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()">
+<div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()">
 	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}" class=map>
 
 	<map name ="{{ map.map_title }}">
@@ -37,7 +37,6 @@
 <p id="displayArea2"></p>
 <p id="displayArea3"></p>
 
-<p>Height = {{ map.image_height }}px, Width = {{ map.image_width }}px</p>
 <p>Locations:</p>
 <ul>
 	{% for location in locations %}

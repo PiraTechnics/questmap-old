@@ -1,5 +1,19 @@
-body { background-color: lightblue; }
-p { color: seagreen; }
+body { 
+	background-color: lightblue;
+}
+
+p {
+	color: seagreen;
+}
+
+/* NOTE -- We need to make adjust location coordinates to match the map resize
+and assure unchanged aspect ratio to preserve location pinpoin accuracy
+#map {
+    height: auto;
+    width: 100%;
+}*/
+
+
 
 /*.brightness {
 	background-color: white;

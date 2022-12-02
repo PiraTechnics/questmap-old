@@ -3,10 +3,7 @@ from django.db import models
 class Map(models.Model):
 	"""A Map that we can view on a page and interact with"""
 	map_title = models.CharField(max_length=50)
-	map_image = models.ImageField(upload_to='upload/', 
-		width_field='image_width', height_field='image_height')
-	image_height = models.IntegerField()
-	image_width = models.IntegerField()
+	map_image = models.ImageField(upload_to='upload/')
 
 	def __str__(self):
 		return self.map_title
