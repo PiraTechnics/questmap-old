@@ -27,4 +27,8 @@ Developer Notes
  - Managed to implement coordinate discovery of spots on a given map, absolute to image properties. A location now has an x and y coordinate, stored in the database. When a map template loads, each location in the db that links to it populates an <area> that is clickable within 10 pixels.
  - Will need to keep in mind resizing for diff browsers, and test for that behavior. Should I look to imprelement unit tests etc?
  - Need to implement a way to add/remove/modify locations from the map view itself -- HOWEVER, this functionality should only be available to GMs. We may need an entirely separate view/template for this -- look into this when Users come into play
+
+ 12/1/22
+ - Having removed original notes app, working at add 'notes' into maps app, which are atm simply text-log entries, timestamped and associated with a specific location. These should be displayed sequentially in each location's info page
+ - Notes added as model, included in Location Template, and migrated into DB.
  

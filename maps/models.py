@@ -21,3 +21,14 @@ class Location(models.Model):
 
 	def __str__(self):
 		return self.title
+
+class Note(models.Model):
+	"""A note associated with a location"""
+	location = models.ForeignKey(Location, on_delete=models.CASCADE)
+	author = models.CharField(max_length=100)
+	created = models.DateTimeField(auto_now_add=True)
+	#updated = models.DateTimeField(auto_now=True)
+	content = models.TextField()
+
+	def __str__(self):
+		return self.content

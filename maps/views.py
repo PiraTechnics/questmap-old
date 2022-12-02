@@ -18,7 +18,8 @@ def map(request, map_id):
 	return render(request, 'maps/map.html', context)
 
 def location(request, location_id):
-	"""Show a specific location for a map"""
+	"""Show a specific location for a map, and all its associated notes"""
 	location = Location.objects.get(id=location_id)
-	context = {'location': location}
+	notes = location.note_set.order_by('-created')
+	context = {'location': location, 'notes': notes}
 	return render(request, 'maps/location.html', context)

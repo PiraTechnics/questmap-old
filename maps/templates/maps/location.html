@@ -4,6 +4,19 @@
 <body>
 	<h1>Location: {{ location.title }}</h1>
 	<p>Description: {{ location.text }}</p>
+
+	<p>Notes:</p>
+	<ul>
+		{% for note in notes %}
+			<li>
+				<p>{{ note.author }}, {{ note.created|date:'M d, Y H:i' }}</p>
+				<p>{{ note.content|linebreaks }}</p>
+			</li>
+		{% empty %}
+		<li>There are no notes for this location.</li>
+	{% endfor %}
+	</ul>
+
 </body>
 
 {% endblock content %}
