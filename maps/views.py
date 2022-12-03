@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Map, Location
-from .forms import MapForm
+from .forms import MapForm, LocationForm
 
 def index(request):
 	return render(request, "maps/index.html")
@@ -42,3 +42,23 @@ def location(request, location_id):
 	notes = location.note_set.order_by('-created')
 	context = {'location': location, 'notes': notes}
 	return render(request, 'maps/location.html', context)
+
+def new_location(request, map_id):
+	"""Add a new location for a given map"""
+	map = Map.objects.get(id=map_id)
+
+	if request.method != 'POST':
+		# No data submitted -- create blank form
+		form = LocationForm()
+	else:
+		# POST data submitted -- process it
+		form = LocationForm(data=request.POST)
+		if form.is_valid():
+			new_location = form.save(commit=False)
+			new_location.map = map
+			new_location.save()
+			return redirect('maps:map', map_id=map_id)
+
+	# Display blank or invalid form
+	context = {'map': map, 'form': form}
+	return render(request, 'maps/new_location.html', context)

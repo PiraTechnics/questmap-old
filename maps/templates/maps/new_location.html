@@ -1,0 +1,15 @@
+{% extends "maps/base.html" %}
+
+{% block content %}
+<body>	
+	<p><a href="{% url 'maps:map' map.id %}">{{ map.map_title }}</a></p>
+
+	<h3>Add new location to map:</h3>
+
+	<form action="{% url 'maps:new_location' map.id %}" method='post'>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button name="submit">Add Location</button>
+	</form>
+</body>
+{% endblock content %}

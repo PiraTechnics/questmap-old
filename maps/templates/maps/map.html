@@ -14,7 +14,13 @@
 <!-- Maphilight functionality -->
 <script type="text/javascript">
   $(function() {
-    $('.map').maphilight();
+    $('.map').maphilight({
+    	fillColor: 'FF0000',
+    	fillOpacity: .35,
+    	strokeColor: '000000',
+    	strokeOpacity: 1,
+    	strokeWidth: 2,
+    });
   });
 </script>
 
@@ -26,7 +32,7 @@
 	<map name ="{{ map.map_title }}">
  		{% for location in locations %}
 			<div class="maparea">
-				<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},10" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}">
+				<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},20" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}">
 
 				<!--onmousemove="foundLoc(this.id)">-->
 			</div>
@@ -47,4 +53,9 @@
 		<li>There are no locations for this map yet.</li>
 	{% endfor %}
 </ul>
+
+<!--Will add this back to test new location functionality when its done
+	Need to be able to pass the coordinates of the desired location, based on where the user clicks (could have them manually enter them for now), and it also needs to be for a specific map (could access this via dropdown but ideally locks into the map we just redirected from)-->
+	<a href="{% url 'maps:new_location' map.id %}">Add new location</a>
+
 {% endblock content %}
