@@ -1,5 +1,5 @@
 from django import forms
-from .models import Map, Location
+from .models import Map, Location, Note
 
 class MapForm(forms.ModelForm):
 	class Meta:
@@ -18,3 +18,10 @@ class LocationForm(forms.ModelForm):
 			'yCoord': 'Y Coordinate'
 		}
 		widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+
+class NoteForm(forms.ModelForm):
+	class Meta:
+		model = Note
+		fields = ['content', 'author']
+		labels = {'content': '', 'author': 'Author'}
+		widgets = {'content': forms.Textarea(attrs={'cols': 50, 'rows': 10})}

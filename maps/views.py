@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Map, Location
-from .forms import MapForm, LocationForm
+from .forms import MapForm, LocationForm, NoteForm
 
 def index(request):
 	return render(request, "maps/index.html")
@@ -40,7 +40,23 @@ def location(request, location_id):
 	"""Show a specific location for a map, and all its associated notes"""
 	location = Location.objects.get(id=location_id)
 	notes = location.note_set.order_by('-created')
-	context = {'location': location, 'notes': notes}
+
+	# Include form to add a new note to the location
+	if request.method != 'POST':
+		# Blank form by default
+		form = NoteForm()
+
+	else:
+		# Submit the POST data and process it
+		form = NoteForm(data=request.POST)
+		if form.is_valid():
+			new_note = form.save(commit=False)
+			new_note.location = location
+			new_note.save()
+			return redirect('maps:location', location_id=location_id)
+
+	# Render page with all notes and an empty form for submitting a new note
+	context = {'location': location, 'notes': notes, 'form': form}
 	return render(request, 'maps/location.html', context)
 
 def new_location(request, map_id):

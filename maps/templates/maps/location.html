@@ -3,9 +3,9 @@
 
 <body>
 	<h1>Location: {{ location.title }}</h1>
-	<p>Description: {{ location.text }}</p>
+	<p>{{ location.text }}</p>
 
-	<p>Notes:</p>
+	<h3 class="listheader">Notes:</h3>
 	<ul>
 		{% for note in notes %}
 			<li>
@@ -16,6 +16,13 @@
 		<li>There are no notes for this location.</li>
 	{% endfor %}
 	</ul>
+
+	<h3 class="footerform">Add New Note</h3>
+	<form action="{% url 'maps:location' location.id %}" method='post'>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button name="submit">Add Note</button>
+	</form>
 
 </body>
 

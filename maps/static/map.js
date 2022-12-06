@@ -21,3 +21,13 @@ function stopTracking(){
 	document.getElementById("displayArea").innerHTML="Coordinates";
 	document.getElementById("displayArea2").innerHTML="Coordinates";
 }
+
+function newLocation(e, id){
+	// Get coordinates of mouse event (will be called onClick) and send to a new location form
+	rect = e.target.getBoundingClientRect();
+	xCoord = e.clientX - rect.left; // X coordinate within the element
+	yCoord = e.clientY - rect.top; // Y coordinate within the element
+	//document.location.href = "{% url 'maps:new_location' map.id %}";
+	document.location.href = "/maps/" + id + "/new_location/";
+
+}

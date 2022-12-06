@@ -22,7 +22,7 @@ class Location(models.Model):
 class Note(models.Model):
 	"""A note associated with a location"""
 	location = models.ForeignKey(Location, on_delete=models.CASCADE)
-	author = models.CharField(max_length=100)
+	author = models.CharField(max_length=100, default='Anon E. Mouse')
 	created = models.DateTimeField(auto_now_add=True)
 	#updated = models.DateTimeField(auto_now=True)
 	content = models.TextField()
