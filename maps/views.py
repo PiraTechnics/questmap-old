@@ -62,10 +62,13 @@ def location(request, location_id):
 def new_location(request, map_id):
 	"""Add a new location for a given map"""
 	map = Map.objects.get(id=map_id)
+	xCoord = request.GET.get('xCoord', '')
+	yCoord = request.GET.get('yCoord', '')
 
 	if request.method != 'POST':
 		# No data submitted -- create blank form
-		form = LocationForm()
+		# BUT make sure to add in the coordinates from URL params
+		form = LocationForm(initial={'xCoord': xCoord, 'yCoord': yCoord})
 	else:
 		# POST data submitted -- process it
 		form = LocationForm(data=request.POST)

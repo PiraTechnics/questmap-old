@@ -15,5 +15,5 @@ urlpatterns = [
 	# Also includes a form to add new notes
 	path('locations/<int:location_id>/', views.location, name='location'),
 	# Page for adding a new location
-	path('maps/<int:map_id>/new_location/', views.new_location, name='new_location'),
+	path('maps/<int:map_id>/new_location', views.new_location, name='new_location'),
 ]

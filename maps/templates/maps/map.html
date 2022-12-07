@@ -33,8 +33,6 @@
  		{% for location in locations %}
 			<div class="maparea">
 				<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},20" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}">
-
-				<!--onmousemove="foundLoc(this.id)">-->
 			</div>
 		{% endfor %}
 	</map>
@@ -53,9 +51,5 @@
 		<li>There are no locations for this map yet.</li>
 	{% endfor %}
 </ul>
-
-<!--Will add this back to test new location functionality when its done
-	Need to be able to pass the coordinates of the desired location, based on where the user clicks (could have them manually enter them for now), and it also needs to be for a specific map (could access this via dropdown but ideally locks into the map we just redirected from)-->
-	<a href="{% url 'maps:new_location' map.id %}">Add new location</a>
 
 {% endblock content %}

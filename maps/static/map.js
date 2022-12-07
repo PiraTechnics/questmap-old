@@ -1,11 +1,3 @@
-function foundLoc(id){
-	// Finds a location on the map and gives its name and coordinates
-	position = document.getElementById(id).coords.split(",");
-	posX = position[0];
-	posY = position[1];
-	alert(id + " is at: " + posX + "," + posY);
-}
-
 function trackCoords(e){
 	// Gets the coordinates of the mouse pointer on a given element
 	// See: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
@@ -27,7 +19,17 @@ function newLocation(e, id){
 	rect = e.target.getBoundingClientRect();
 	xCoord = e.clientX - rect.left; // X coordinate within the element
 	yCoord = e.clientY - rect.top; // Y coordinate within the element
-	//document.location.href = "{% url 'maps:new_location' map.id %}";
-	document.location.href = "/maps/" + id + "/new_location/";
+	locData = {'xCoord': xCoord, 'yCoord': yCoord};
+	queryParam = encodeQuery(locData);
+	url = "/maps/" + id + "/new_location";
+	url += queryParam;
+	document.location.href = url;
+}
 
+function encodeQuery(data) {
+	let query = "?";
+	for (let d in data)
+		query += encodeURIComponent(d) + '=' 
+			+ encodeURIComponent(data[d]) + '&';
+	return query.slice(0, -1);
 }

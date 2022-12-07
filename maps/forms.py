@@ -17,7 +17,10 @@ class LocationForm(forms.ModelForm):
 			'xCoord': 'X Coordinate',
 			'yCoord': 'Y Coordinate'
 		}
-		widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+		widgets = {'text': forms.Textarea(attrs={'cols': 80}),
+			'xCoord': forms.HiddenInput(),
+			'yCoord': forms.HiddenInput()
+		}
 
 class NoteForm(forms.ModelForm):
 	class Meta:

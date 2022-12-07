@@ -32,3 +32,5 @@ To set up this project on your own environment, do the following:
 
 For Admin management, you'll need to create a Superuser:
 	python manage.py createsuperuser
+
+Alternatively, you can run the setup_project.sh script, which runs all the above commands (except the git clone, duh)
