@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from .models import Map, Location
 from .forms import MapForm, LocationForm, NoteForm
 
+@login_required
 def index(request):
 	return render(request, "maps/index.html")
 
+@login_required
 def maps(request):
 	"""Show all the maps as a list of links"""
 	maps = Map.objects.order_by('map_title')
 	context = {'maps': maps}
 	return render(request, 'maps/maps.html', context)
 
+@login_required
 def map(request, map_id):
 	"""Show a single map"""
 	map = Map.objects.get(id=map_id)
@@ -18,6 +23,7 @@ def map(request, map_id):
 	context = {'map': map, 'locations': locations}
 	return render(request, 'maps/map.html', context)
 
+@login_required
 def new_map(request):
 	"""Add a new map"""
 	if request.method != 'POST':
@@ -35,7 +41,7 @@ def new_map(request):
 	context = {'form': form}
 	return render(request, 'maps/new_map.html', context)
 
-
+@login_required
 def location(request, location_id):
 	"""Show a specific location for a map, and all its associated notes"""
 	location = Location.objects.get(id=location_id)
@@ -59,6 +65,7 @@ def location(request, location_id):
 	context = {'location': location, 'notes': notes, 'form': form}
 	return render(request, 'maps/location.html', context)
 
+@login_required
 def new_location(request, map_id):
 	"""Add a new location for a given map"""
 	map = Map.objects.get(id=map_id)
