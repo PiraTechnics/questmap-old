@@ -1,12 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Map, Location
+from .models import Character, Map, Location
 from .forms import MapForm, LocationForm, NoteForm
 
 @login_required
 def index(request):
 	return render(request, "maps/index.html")
+
+@login_required
+def characters(request):
+	"""Shows all of a user's characters"""
+	characters = Character.objects.order_by('char_name')
+	context = {'characters': characters}
+	return render(request, 'maps/characters.html', context)
+
+@login_required
+def character(request, char_id):
+	"""Show a single character's profile"""
+	character = Character.objects.get(id=char_id)
+	context = {'character': character}
+	return render(request, 'maps/character.html', context)
 
 @login_required
 def maps(request):

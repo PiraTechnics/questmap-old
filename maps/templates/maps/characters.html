@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+	<p>Characters</p>
+	<ul>
+		{% for character in characters %}
+			<li><a href="{% url 'maps:character' character.id %}">{{ character.char_name }}</a></li>
+		{% empty %}
+			<li>You don't have any characters!</li>
+		{% endfor %}
+	</ul>
+</body>
+{% endblock content %}
+
+</html>

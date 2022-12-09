@@ -5,6 +5,10 @@ app_name = 'maps'
 urlpatterns = [
 	# Home Page
 	path('', views.index, name='index'),
+	# Page to show links to all characters
+	path('characters/', views.characters, name='characters'),
+	# Page to show a single character's profile
+	path('characters/<str:char_id>', views.character, name='character'),
 	# Page to show links to all maps
 	path('maps/', views.maps, name = 'maps'),
 	# Page to display a single map
