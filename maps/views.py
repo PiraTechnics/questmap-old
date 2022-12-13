@@ -1,12 +1,30 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Character, Map, Location
+from .models import Campaign, Character, Map, Location
 from .forms import MapForm, LocationForm, NoteForm
 
 @login_required
 def index(request):
 	return render(request, "maps/index.html")
+
+@login_required
+def campaigns(request):
+	"""Show all of the user's campaigns"""
+	#Note: this will intially ownly apply to the owner of a campaign
+	#We will add functionality for players to see their campaigns after
+	user = request.user
+	campaigns = Campaign.objects.filter(user=user)
+	context = {'campaigns': campaigns}
+	return render(request, 'maps/campaigns.html', context)
+
+@login_required
+def campaign(request, camp_id):
+	"""Show a single campaign"""
+	user = request.user
+	campaign = Campaign.objects.get(id=camp_id)
+	context = {'campaign': campaign}
+	return render(request, 'maps/campaign.html', context)
 
 @login_required
 def characters(request):
@@ -71,6 +89,7 @@ def location(request, location_id):
 		form = NoteForm(data=request.POST)
 		if form.is_valid():
 			new_note = form.save(commit=False)
+			new_note.user = request.user
 			new_note.location = location
 			new_note.save()
 			return redirect('maps:location', location_id=location_id)

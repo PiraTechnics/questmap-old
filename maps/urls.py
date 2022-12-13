@@ -5,10 +5,14 @@ app_name = 'maps'
 urlpatterns = [
 	# Home Page
 	path('', views.index, name='index'),
+	# Page to show links to all campaigns
+	path('campaigns/', views.campaigns, name='campaigns'),
+	# Path to show a single campaign
+	path('campaigns/<int:campaign_id>', views.campaign, name='campaign'),
 	# Page to show links to all characters
 	path('characters/', views.characters, name='characters'),
 	# Page to show a single character's profile
-	path('characters/<str:char_id>', views.character, name='character'),
+	path('characters/<int:char_id>', views.character, name='character'),
 	# Page to show links to all maps
 	path('maps/', views.maps, name = 'maps'),
 	# Page to display a single map

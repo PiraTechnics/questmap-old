@@ -1,6 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Campaign(models.Model):
+	"""A campaign that characters and maps are in.
+	Basically, the a representation of the instance of a game
+	that is owned by a GM user, and played in by a number of player users
+	represented by their respective characters"""
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	title = models.CharField(max_length=200)
+	description = models.TextField()
+
+	def __str__(self):
+		return self.title
+
 class Character(models.Model):
 	"""A Character that goes on adventures, and their info"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

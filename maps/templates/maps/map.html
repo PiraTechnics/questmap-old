@@ -26,7 +26,7 @@
 
 <p id="displayArea">Coordinates</p>
 
-<div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()" onclick="newLocation(event, {{ map.id }})">
+<div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()" onclick="newLocation(event, '{{ map.id }}')">
 	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}" class=map>
 
 	<map name ="{{ map.map_title }}">
