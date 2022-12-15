@@ -1,19 +1,21 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'base.css' %}">
 
-<p>
-	<a href="{% url 'maps:index' %}">Home</a>
-	<a href="{% url 'maps:maps' %}">Maps</a>
+<header><div class="header-bar">
 	{% if user.is_authenticated %}
-		Hello, {{ user.username }}.
-		<a href="{% url 'maps:characters' %}">Characters</a>
-		<a href="{% url 'maps:campaigns' %}">Campaigns</a>
-		<a href="{% url 'users:logout' %}">Log out</a>
+		<p>
+			<a class="bar-button" href="{% url 'maps:index' %}">Home</a>
+			<a class="bar-button" href="{% url 'maps:maps' %}">Maps</a>
+			<a class="bar-button" href="{% url 'maps:characters' %}">Characters</a>
+			<a class="bar-button" href="{% url 'maps:campaigns' %}">Campaigns</a>
+			<div class="user">Logged in as: {{ user.username }} - <a href="{% url 'users:logout' %}">Log out</a></p></div>
+		</p>
 	{% else %}
-		<a href="{% url 'users:register' %}">Register</a> -
-		<a href="{% url 'users:login' %}">Log in</a>
+		<a class="bar-button" href="{% url 'users:login' %}">Log in</a>	
+		<a class="bar-button" href="{% url 'users:register' %}">Register</a>
 	{% endif %}
-</p>
+</div></header>
+
 
 {% block content %}
 {% endblock content %}

@@ -6,7 +6,7 @@ This project was built using venv as a virtual environment. The virtual environm
 
 software requirements and dependencies can be found in requirements.txt
 
-To set up this project on your own environment, do the following:
+To set up this project on a Linux environment, do the following:
 
 1. Clone the repository:
 	git clone https://github.com/PiraTechnics/questmap.git
@@ -27,10 +27,9 @@ To set up this project on your own environment, do the following:
 6. Generate a unique secret key using django's shell and replace dummy key with output:
 	echo "SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())') > .env
 
-7. Run the server:
-	python manage.py runserver
-
-For Admin management, you'll need to create a Superuser:
+7. For Admin management, you'll need to create a Superuser:
 	python manage.py createsuperuser
 
-Alternatively, you can run the setup_project.sh script, which runs all the above commands (except the git clone, duh)
+For Windows Environments, the steps are similar, but requires the use of Git-Cli to run commands. Venv may also function differently (especially if you set it up using Windows Powershell). Reccomended Programs for Windows:
+- VSCode: https://code.visualstudio.com/
+- Git-scm: https://git-scm.com/download/win
