@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Campaign(models.Model):
 	"""A campaign that characters and maps are in.
@@ -7,7 +8,7 @@ class Campaign(models.Model):
 	that is owned by a GM user, and played in by a number of player users
 	represented by their respective characters"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	title = models.CharField(max_length=200)
+	title = models.CharField(max_length=100)
 	description = models.TextField()
 
 	def __str__(self):
@@ -15,8 +16,29 @@ class Campaign(models.Model):
 
 class Character(models.Model):
 	"""A Character that goes on adventures, and their info"""
+	CLASSES = (
+		('Artificer', 'Artificer'),
+		('Barbarian', 'Barbarian'),
+		('Bard', 'Bard'),
+		('Cleric', 'Cleric'),
+		('Druid', 'Druid'),
+		('Fighter', 'Fighter'),
+		('Monk', 'Monk'),
+		('Paladin', 'Paladin'),
+		('Ranger', 'Ranger'),
+		('Rogue', 'Rogue'),
+		('Sorcerer', 'Sorcerer'),
+		('Warlock', 'Warlock'),
+		('Wizard', 'Wizard')
+	)
+	
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	char_name = models.CharField(max_length=75)
+	# Can't migrate this without causing "non null integrity errors" so hang off for now
+	#campaign = models.ForeignKey(Campaign, null=True, default=None, on_delete=models.SET_DEFAULT)
+	char_name = models.CharField(max_length=100)
+	char_desc = models.TextField(default=None, null=True)
+	char_class = models.CharField(max_length=32, choices=CLASSES, null=True, default=None)
+	char_level = models.IntegerField(default=1,validators=[MaxValueValidator(20), MinValueValidator(1)])
 
 	def __str__(self):
 		return self.char_name

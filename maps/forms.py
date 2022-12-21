@@ -1,5 +1,11 @@
 from django import forms
-from .models import Map, Location, Note
+from .models import Character, Map, Location, Note
+
+class CharacterForm(forms.ModelForm):
+	class Meta:
+		model = Character
+		fields = ['char_name']
+		labels = {'char_name': 'Name'}
 
 class MapForm(forms.ModelForm):
 	class Meta:

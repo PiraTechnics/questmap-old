@@ -1,10 +1,32 @@
 body { 
-	background-color: lightblue;
+	background-color: #e9d9b4;
 }
 
-p {
-	color: seagreen;
+#mapView {
+	/*display: flex;
+	justify-content: center;*/
+	display: inline-block;
+	border-style: groove;
+	border: 3px solid gold;
+	padding: 1px;
+	margin-left: 2px;
+	margin-right: 2px;
+	overflow: auto;
+
 }
+
+.box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+	background-color: rgba(#000, 0.5);
+	width: 100%;
+	max-width: 600px;
+	padding: 5px;
+	border: 2px solid #b78846;
+}
+
 
 /* NOTE -- We need to make adjust location coordinates to match the map resize
 and assure unchanged aspect ratio to preserve location pinpoin accuracy
@@ -12,14 +34,3 @@ and assure unchanged aspect ratio to preserve location pinpoin accuracy
     height: auto;
     width: 100%;
 }*/
-
-
-
-/*.brightness {
-	background-color: white;
-	display: inline-block;
-}
-
-.brightness img:hover {
-	opacity: .5;
-}NOTE:  This appears broken now that we've included maphilight...*/

@@ -8,7 +8,7 @@ urlpatterns = [
 	# Page to show links to all campaigns
 	path('campaigns/', views.campaigns, name='campaigns'),
 	# Path to show a single campaign
-	path('campaigns/<int:campaign_id>', views.campaign, name='campaign'),
+	path('campaigns/<int:camp_id>', views.campaign, name='campaign'),
 	# Page to show links to all characters
 	path('characters/', views.characters, name='characters'),
 	# Page to show a single character's profile
