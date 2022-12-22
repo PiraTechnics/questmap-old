@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Campaign, Character, Map, Location
-from .forms import MapForm, LocationForm, NoteForm
+from .forms import CharacterForm, MapForm, LocationForm, NoteForm
 
 @login_required
 def index(request):
@@ -23,13 +23,16 @@ def campaign(request, camp_id):
 	"""Show a single campaign"""
 	user = request.user
 	campaign = Campaign.objects.get(id=camp_id)
-	context = {'campaign': campaign}
+	characters = Character.objects.filter(campaign=camp_id)
+	maps = Map.objects.filter(campaign=camp_id)
+	context = {'campaign': campaign, 'characters': characters, 'maps': maps}
 	return render(request, 'maps/campaign.html', context)
 
 @login_required
 def characters(request):
 	"""Shows all of a user's characters"""
-	characters = Character.objects.order_by('char_name')
+	characters = Character.objects.filter(user=request.user).order_by('char_name') # Limit to the current user's characters
+	# NOTE: Will need to find a way to limit url inputs to stop users from seeing characters they don't own...unless we want to allow that in some cases?
 	context = {'characters': characters}
 	return render(request, 'maps/characters.html', context)
 
@@ -39,6 +42,25 @@ def character(request, char_id):
 	character = Character.objects.get(id=char_id)
 	context = {'character': character}
 	return render(request, 'maps/character.html', context)
+
+@login_required
+def new_character(request):
+	"""Add a new character"""
+	if request.method != 'POST':
+		# No data submitted - create blank form
+		form = CharacterForm()
+	else:
+		# POST data submitted -- process it
+		form = CharacterForm(request.POST)
+		if form.is_valid():
+			new_char = form.save(commit=False)
+			new_char.user = request.user
+			new_char.save()
+			return redirect('maps:characters')
+			
+	# Display a blank or invalid form
+	context = {'form': form}
+	return render(request, 'maps/new_character.html', context)
 
 @login_required
 def maps(request):
@@ -83,6 +105,8 @@ def location(request, location_id):
 	if request.method != 'POST':
 		# Blank form by default
 		form = NoteForm()
+		# Only allow choice of author to be one of the current user's characters
+		form.fields['author'].queryset = Character.objects.filter(user=request.user)
 
 	else:
 		# Submit the POST data and process it

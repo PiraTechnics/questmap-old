@@ -29,7 +29,7 @@ function encodeQuery(data) {
 }
 
 function getCoords(event) {
-		// Gets the coordinates of the mouse pointer on a given element
+	// Gets the coordinates of the mouse pointer on a given element
 	// See: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
 	var rect = event.target.getBoundingClientRect();
 	var coords = [(event.clientX - rect.left), (event.clientY - rect.top)];

@@ -31,14 +31,70 @@ class Character(models.Model):
 		('Warlock', 'Warlock'),
 		('Wizard', 'Wizard')
 	)
+
+	LINEAGES = (
+		('Aarakockra', 'Aaracokra'),
+		('Aasimar', 'Aasimar'),
+		('Bugbear', 'Bugbear'),
+		('Centaur', 'Centaur'),
+		('Changeling', 'Changeling'),
+		('Dragonborn', 'Dragonborn'),
+		('Dwarf', 'Dwarf'),
+		('Elf', 'Elf'),
+		('Fairy', 'Fairy'),
+		('Firbolg', 'Firbolg'),
+		('Air Genasi', ' Air Genasi'),
+		('Earth Genasi', ' Earth Genasi'),
+		('Fire Genasi', ' Fire Genasi'),
+		('Water Genasi', ' Water Genasi'),
+		('Gnome', 'Gnome'),
+		('Goblin', 'Goblin'),
+		('Golaith', 'Goliath'),
+		('Half-Elf', 'Half-Elf'),
+		('Half-Orc', 'Half-Orc'),
+		('Halfling', 'Halfling'),
+		('Harengon', 'Harengon'),
+		('Human', 'Human'),
+		('Kenku', 'Kenku'),
+		('Lizardfolk', 'Lizardfolk'),
+		('Orc', 'Orc'),
+		('Tabaxi', 'Tabaxi'),
+		('Tiefling', 'Tiefling'),
+		('Tortle', 'Tortle'),
+		('Warforged', 'Warforged'),
+		('Yuan-Ti', 'Yuan-Ti')
+	)
+
+	LEVELS = (
+		(1, '1'),
+		(2, '2'),
+		(3, '3'),
+		(4, '4'),
+		(5, '5'),
+		(6, '6'),
+		(7, '7'),
+		(8, '8'),
+		(9, '9'),
+		(10, '10'),
+		(11, '11'),
+		(12, '12'),
+		(13, '13'),
+		(14, '14'),
+		(15, '15'),
+		(16, '16'),
+		(17, '17'),
+		(18, '18'),
+		(19, '19'),
+		(20, '20')
+	)
 	
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	# Can't migrate this without causing "non null integrity errors" so hang off for now
-	#campaign = models.ForeignKey(Campaign, null=True, default=None, on_delete=models.SET_DEFAULT)
+	campaign = models.ForeignKey(Campaign, default=None, null=True, on_delete=models.SET_DEFAULT)
 	char_name = models.CharField(max_length=100)
 	char_desc = models.TextField(default=None, null=True)
+	char_lineage = models.CharField(max_length=32, choices=LINEAGES, null=True, default=None)
 	char_class = models.CharField(max_length=32, choices=CLASSES, null=True, default=None)
-	char_level = models.IntegerField(default=1,validators=[MaxValueValidator(20), MinValueValidator(1)])
+	char_level = models.IntegerField(default=1, choices=LEVELS)
 
 	def __str__(self):
 		return self.char_name
@@ -47,6 +103,8 @@ class Map(models.Model):
 	"""A Map that we can view on a page and interact with"""
 	map_title = models.CharField(max_length=50)
 	map_image = models.ImageField(upload_to='upload/')
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.map_title
@@ -65,8 +123,8 @@ class Location(models.Model):
 class Note(models.Model):
 	"""A note associated with a location"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	location = models.ForeignKey(Location, on_delete=models.CASCADE)
-	author = models.CharField(max_length=100, default='Anon E. Mouse')
+	location = models.ForeignKey(Location, on_delete=models.CASCADE) # Maybe we preserve the notes if a location is accidentally deleted?
+	author = models.ForeignKey(Character, on_delete=models.CASCADE)
 	created = models.DateTimeField(auto_now_add=True)
 	#updated = models.DateTimeField(auto_now=True)
 	content = models.TextField()

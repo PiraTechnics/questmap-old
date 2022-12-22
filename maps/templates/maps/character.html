@@ -2,8 +2,10 @@
 
 {% block content %}
 <body>
-    <p>Character: {{ character.char_name }}</p>
-    <p>I wonder what they're like?</p>
+    <p>{{ character.char_name }}</p>
+    <p>Level {{ character.char_level }} {{ character.char_lineage }} {{ character.char_class }}</p>
+    <p>Campaign: {{ character.campaign }}</p>
+    <p>Played by {{ character.user }}</p>
 </body>
 {% endblock content %}
 

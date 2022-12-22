@@ -13,6 +13,8 @@ urlpatterns = [
 	path('characters/', views.characters, name='characters'),
 	# Page to show a single character's profile
 	path('characters/<int:char_id>', views.character, name='character'),
+	# Page for adding a new character
+	path('characters/new_character', views.new_character, name='new_character'),
 	# Page to show links to all maps
 	path('maps/', views.maps, name = 'maps'),
 	# Page to display a single map

@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h3>Add new Map:</h3>
+<h3>Add new Map:</h3>
 
-	<form action="{% url 'maps:new_map' %}" method='post' enctype='multipart/form-data'>
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button name="submit">Upload Map</button>
-	</form>
+<form action="{% url 'maps:new_map' %}" method='post' enctype='multipart/form-data'>
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">Upload Map</button>
+</form>
 	
-	{% if map_obj %}
-		<h3>Sucessfully Uploaded: {{ map_obj.map_title }}</h3>
-		<img src="{{ map_obj.map_image.url }}" alt="connect" style="max-height: 600px; max-width: 1000px;">
-	{% endif %}
+{% if map_obj %}
+	<h3>Sucessfully Uploaded: {{ map_obj.map_title }}</h3>
+	<img src="{{ map_obj.map_image.url }}" alt="connect" style="max-height: 600px; max-width: 1000px;">
+{% endif %}
 
 {% endblock content %}
