@@ -1,5 +1,11 @@
 from django import forms
-from .models import Character, Map, Location, Note
+from .models import Campaign, Character, Map, Location, Note
+
+class CampaignForm(forms.ModelForm):
+	class Meta:
+		model = Campaign
+		fields =['title', 'description']
+		labels = {'title': 'Title', 'description': 'Summary'}
 
 class CharacterForm(forms.ModelForm):
 	class Meta:

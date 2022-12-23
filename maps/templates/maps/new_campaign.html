@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Add new Campaign:</h3>
+
+<form action="{% url 'maps:new_campaign' %}" method='post' enctype='multipart/form-data'>
+	{% csrf_token %}
+	{{ form.as_p }}
+    <button name="submit">Create Campaign</button>
+</form>
+
+{% endblock content %}

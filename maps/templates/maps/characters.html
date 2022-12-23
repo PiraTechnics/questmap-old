@@ -2,7 +2,7 @@
 
 {% block content %}
 <body>
-	<p>Characters</p>
+	<h2 class="title">Characters</h2>
 	<ul>
 		{% for character in characters %}
 			<li><a href="{% url 'maps:character' character.id %}">{{ character.char_name }}</a></li>
@@ -12,7 +12,9 @@
 	</ul>
 </body>
 
-<a href="{% url 'maps:new_character' %}">Create New Character</a>
+<form class="center footer" action="{% url 'maps:new_character' %}" method="GET">
+	<button>New Character</button>
+</form>
 
 {% endblock content %}
 

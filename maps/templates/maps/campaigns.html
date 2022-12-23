@@ -2,7 +2,7 @@
 
 {% block content %}
 <body>
-	<p>Your Campaigns</p>
+	<h2 class="title">Campaigns</h2>
 	<ul>
 		{% for campaign in campaigns %}
 			<li><a href="{% url 'maps:campaign' campaign.id %}">{{ campaign.title }}</a></li>
@@ -11,6 +11,11 @@
 		{% endfor %}
 	</ul>
 </body>
+
+<form class="center footer" action="{% url 'maps:new_campaign' %}" method="GET">
+	<button>New Campaign</button>
+</form>
+
 {% endblock content %}
 
 </html>

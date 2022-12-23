@@ -13,6 +13,8 @@
 	</ul>
 </body>
 
-<a href="{% url 'maps:new_map' %}">Add a new map</a>
+<form class="center footer" action="{% url 'maps:new_map' %}" method="GET">
+	<button>Add New Map</button>
+</form>
 
 {% endblock content %}

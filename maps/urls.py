@@ -9,6 +9,8 @@ urlpatterns = [
 	path('campaigns/', views.campaigns, name='campaigns'),
 	# Path to show a single campaign
 	path('campaigns/<int:camp_id>', views.campaign, name='campaign'),
+	# Path for adding a new Campaign
+	path('campaigns/new_campaign', views.new_campaign, name='new_campaign'),
 	# Page to show links to all characters
 	path('characters/', views.characters, name='characters'),
 	# Page to show a single character's profile
@@ -20,7 +22,7 @@ urlpatterns = [
 	# Page to display a single map
 	path('maps/<int:map_id>/', views.map, name='map'),
 	# Page for adding a new map
-	path('maps/new_map/', views.new_map, name='new_map'),
+	path('maps/new_map', views.new_map, name='new_map'),
 	# Page to display a single location, and all notes about it
 	# Also includes a form to add new notes
 	path('locations/<int:location_id>/', views.location, name='location'),

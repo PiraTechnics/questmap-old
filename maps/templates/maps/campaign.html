@@ -2,10 +2,10 @@
 
 {% block content %}
 <body>
-    <h3>Campaign: {{ campaign.title }}</h3>
-    <p>{{ campaign.description }}</p>
+    <h3 class="title">Campaign: {{ campaign.title }}</h3>
+    <p class="subtitle">{{ campaign.description }}</p>
 
-    <h4>Players</h4>
+    <h4 class="title">Players</h4>
         <ul>
             {% for character in characters %}
                 <li><a href="{% url 'maps:character' character.id %}">{{ character.char_name }}</a></li>
@@ -14,7 +14,7 @@
             {% endfor %}
         </ul>
 
-    <h4>Maps</h4>
+    <h4 class="title">Maps</h4>
         <ul>
             {% for map in maps %}
                 <li><a href="{% url 'maps:map' map.id %}">{{ map.map_title }}</a></li>

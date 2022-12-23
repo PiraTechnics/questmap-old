@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Campaign, Character, Map, Location
-from .forms import CharacterForm, MapForm, LocationForm, NoteForm
+from .forms import CampaignForm, CharacterForm, MapForm, LocationForm, NoteForm
 
 @login_required
 def index(request):
@@ -27,6 +27,25 @@ def campaign(request, camp_id):
 	maps = Map.objects.filter(campaign=camp_id)
 	context = {'campaign': campaign, 'characters': characters, 'maps': maps}
 	return render(request, 'maps/campaign.html', context)
+
+@login_required
+def new_campaign(request):
+	"""Add a new Campaign -- GMs only"""
+	if request.method != 'POST':
+		# No data submitted - create blank for
+		form = CampaignForm()
+	else:
+		# POST data submitted - process it
+		form = CampaignForm(request.POST)
+		if form.is_valid():
+			new_camp = form.save(commit=False)
+			new_camp.user = request.user
+			new_camp.save()
+			return redirect('maps:campaigns')
+
+	# Display a blank or invalid form
+	context = {'form': form}
+	return render(request, 'maps/new_campaign.html', context)
 
 @login_required
 def characters(request):
