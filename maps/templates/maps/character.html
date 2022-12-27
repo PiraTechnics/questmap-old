@@ -2,10 +2,26 @@
 
 {% block content %}
 <body>
-    <p>{{ character.char_name }}</p>
+    <div class="title">
+    <h3>{{ character.char_name }}</h3>
+    </div>
+    <div class="center">
     <p>Level {{ character.char_level }} {{ character.char_lineage }} {{ character.char_class }}</p>
     <p>Campaign: {{ character.campaign }}</p>
     <p>Played by {{ character.user }}</p>
+
+	<h3 class="listheader">Notes:</h3>
+	<ul>
+		{% for note in notes %}
+			<li>
+				<p>{{ note.location }}, {{ note.created|date:'M d, Y H:i' }}</p>
+				<p>{{ note.content|linebreaks }}</p>
+			</li>
+		{% empty %}
+		<li>This Character has no notes!</li>
+	{% endfor %}
+
+    </div>
 </body>
 {% endblock content %}
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Campaign, Character, Map, Location
+from .models import Campaign, Character, Map, Location, Note
 from .forms import CampaignForm, CharacterForm, MapForm, LocationForm, NoteForm
 
 @login_required
@@ -59,7 +59,8 @@ def characters(request):
 def character(request, char_id):
 	"""Show a single character's profile"""
 	character = Character.objects.get(id=char_id)
-	context = {'character': character}
+	notes = Note.objects.filter(author=character)
+	context = {'character': character, 'notes': notes}
 	return render(request, 'maps/character.html', context)
 
 @login_required
