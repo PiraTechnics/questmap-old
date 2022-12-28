@@ -9,7 +9,7 @@
 			<a class="bar-button" href="{% url 'maps:maps' %}">Maps</a>
 			<a class="bar-button" href="{% url 'maps:characters' %}">Characters</a>
 			<a class="bar-button" href="{% url 'maps:campaigns' %}">Campaigns</a>
-			<div class="user">Logged in as: {{ user.username }} - <a href="{% url 'users:logout' %}">Log out</a></p></div>
+			<div class="user">Logged in as: <a href="{% url 'users:profile' user.username %}">{{ user.username }}</a> - <a href="{% url 'users:logout' %}">Log out</a></p></div>
 		</p>
 	{% else %}
 		<a class="bar-button" href="{% url 'users:login' %}">Log in</a>	

@@ -3,6 +3,7 @@ This is the Readme for QuestMap, a web application to plot your RPG notes on a m
 This project was built using venv as a virtual environment. The virtual environment has been excluded, following good practice.
 
 .gitignore template by Stan Triepels: https://djangowaves.com/tips-tricks/gitignore-for-a-django-project/
+mock maps and data sourced by https://freefantasymaps.org/about/
 
 software requirements and dependencies can be found in requirements.txt
 

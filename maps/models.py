@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Campaign(models.Model):
 	"""A campaign that characters and maps are in.
@@ -101,9 +100,9 @@ class Character(models.Model):
 
 class Map(models.Model):
 	"""A Map that we can view on a page and interact with"""
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	map_title = models.CharField(max_length=50)
 	map_image = models.ImageField(upload_to='upload/')
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -111,6 +110,7 @@ class Map(models.Model):
 
 class Location(models.Model):
 	"""A Location on a map, that we can point to"""
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	map = models.ForeignKey(Map, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200)
 	text = models.TextField()
@@ -123,8 +123,8 @@ class Location(models.Model):
 class Note(models.Model):
 	"""A note associated with a location"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	location = models.ForeignKey(Location, on_delete=models.CASCADE) # Maybe we preserve the notes if a location is accidentally deleted?
 	author = models.ForeignKey(Character, on_delete=models.CASCADE)
+	location = models.ForeignKey(Location, on_delete=models.CASCADE) # Maybe we preserve the notes if a location is accidentally deleted?
 	created = models.DateTimeField(auto_now_add=True)
 	#updated = models.DateTimeField(auto_now=True)
 	content = models.TextField()
