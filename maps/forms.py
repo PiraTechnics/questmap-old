@@ -16,8 +16,8 @@ class CharacterForm(forms.ModelForm):
 class MapForm(forms.ModelForm):
 	class Meta:
 		model = Map
-		fields = ['map_title', 'map_image']
-		labels = {'map_title': 'Name', 'map_image': 'Image'}
+		fields = ['map_title', 'map_image', 'campaign']
+		labels = {'map_title': 'Name', 'map_image': 'Image', 'campaign': 'Campaign'}
 
 class LocationForm(forms.ModelForm):
 	class Meta:

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <body>
+        <h2 class="title">Hello, {{ user.username }}!</h2>
+        <div class="center">
+        <p>Your Groups:</p>
+        <ul>
+            {% for group in groups %}
+                <li>{{ group }}</li>
+            {% empty %}
+                <li>You aren't in any groups!</li>
+            {% endfor %}
+        </ul>
+    </div>
+    </body>
+{% endblock content %}

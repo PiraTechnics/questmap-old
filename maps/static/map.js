@@ -1,6 +1,8 @@
 function trackCoords(e){
-	coordinates = getCoords(e);
-	cursor="Coordinates on Map (x,y): (" + coordinates[0] + "," + coordinates[1] + ")" ;
+	// Gets the coordinates of the mouse pointer on a given element
+	// See: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
+	var coords = getMapCoords(e);
+	cursor="Coordinates on Map (x,y): (" + coords[0] + "," + coords[1] + ")" ;
 	document.getElementById("displayArea").innerHTML=cursor
 	document.getElementById("displayArea2").innerHTML=cursor
 }
@@ -12,8 +14,8 @@ function stopTracking(){
 
 function newLocation(e, id){
 	// Get coordinates of mouse event (will be called onClick) and send to a new location form
-	coordinates = getCoords(e);
-	locData = {'xCoord': coordinates[0], 'yCoord': coordinates[1]};
+	var coords = getMapCoords(e);
+	locData = {'xCoord': coords[0], 'yCoord': coords[1]};
 	queryParam = encodeQuery(locData);
 	url = "/maps/" + id + "/new_location";
 	url += queryParam;
@@ -28,16 +30,11 @@ function encodeQuery(data) {
 	return query.slice(0, -1);
 }
 
-function getCoords(event) {
-	// Gets the coordinates of the mouse pointer on a given element
-	// See: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
+function getMapCoords(event) {
 	var rect = event.target.getBoundingClientRect();
-	var coords = [(event.clientX - rect.left), (event.clientY - rect.top)];
+	var xCoord = event.clientX - rect.left; // X coordinate within the element
+	var yCoord = event.clientY - rect.top; // Y coordinate within the element
 
-	//Should do some validation here, like check for integer values?
-	return coords;
+	// Return an array containing both coordinates
+	return [xCoord, yCoord];
 }
-
-	//Note: Revisit this sometime -- above function getCoords() might return floating variables if containing element
-	// has decimal values. need to force intergers or otherwise validate coordinates somehow...
-	// Basically, we need a way to ensure that the top-left of the map is 0,0, not o,0.25 or whatever
