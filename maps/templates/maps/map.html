@@ -2,29 +2,154 @@
 {% block content %}
 
 {% load static %}
-<script src="{% static 'map.js' %}"></script>
-<link rel="stylesheet" href="{% static 'map.css' %}">
 
-<!-- Import Jquery and Maphilight pluglin -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-</script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js">
-</script>
 
-<!-- Maphilight functionality -->
-<script type="text/javascript">
-  $(function() {
-    $('.map').maphilight({
-    	fillColor: 'FF0000',
-    	fillOpacity: .35,
-    	strokeColor: '000000',
-    	strokeOpacity: 1,
-    	strokeWidth: 2,
-    });
-  });
+<head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+crossorigin="">
 </script>
 
-<p id="displayArea">Coordinates</p>
+<style>
+	#map { 
+		/* formula: https://levelup.gitconnected.com/dynamic-element-scaling-in-css-7e35ed9a3914*/
+		/*height: calc(240px + (1926 - 240) * ((100vw - 500px) / (1920 - 500)));*/
+		width: 80%;
+		aspect-ratio: 16/9;
+		/*height: 80%;*/
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 1%;
+		background-color: rgb(238, 232, 225);
+		border: 5px outset rgba(212, 187, 40, 0.801);
+	}
+</style>
+
+</head>
+
+<!-- Trying something different, bear with me...
+
+WE're Using a library called 'Leaflet' to present our maps as tiled, zoomable interactive maps
+- Need to learn the library more
+- Need to convert static images into base tiles
+- remember -- you have stashed form stuff in your local git repo
+-->
+
+<body>
+
+<div id="map"></div>
+<div id="image-map"></div>
+
+<script type="text/javascript"
+ defer 
+ data-map-url='{{ map.map_image.url }}'
+ data-map-height='{{ map.map_image.height }}'
+ data-map-width='{{ map.map_image.width }}'
+ data-map-id='{{ map.id }}'>
+
+	//Define our image attibutes, passed from Django
+	const data = document.currentScript.dataset;
+	const map_id = data.mapId;
+	const map_url = data.mapUrl;
+	const map_height = data.mapHeight;
+	const map_width = data.mapWidth;
+	
+	//Get Map Container and Browser Window Dimensions
+	var mapDiv = document.getElementById("map");
+	var windowW = document.documentElement.clientWidth;
+	console.log("Window Width: " + windowW);
+	
+	var scaledImageW = map_width,
+		imageAspectR = map_width/map_height,
+		scaleFactor = 0,
+		zoomMin = 0,
+		zoomMax = 0;
+	
+	// Scale down Image if it is bigger than our screen
+	while(windowW < scaledImageW) {
+		scaledImageW /= 1.5; //Scale down -- might need to revisit this later
+		scaleFactor ++;
+	}
+	//console.log("Image scaled width: " + scaledImageW);
+
+	//don't allow a scaleFactor greater than 3
+	if(scaleFactor >= 3) {
+		zoomMin = -2;
+		zoomMax = 1;
+	}
+	else {
+		zoomMin = -1;
+		zoomMax = 1;
+	}
+
+	//Scale Aspect Ratio for div to reflect image dimensions
+	mapDiv.style.aspectRatio = imageAspectR;
+	if(scaledImageW < windowW) {
+		//if image is smaller than screen, set it to same size
+		//mapDiv.style.width = scaledImageW;
+	}
+
+	//Initialize Leaflet Map
+	var map_bounds = [[0,0], [map_height, map_width]];
+	var center = [map_height/2, map_width/2];
+	var map = L.map('map', {
+		crs: L.CRS.Simple,
+		maxBounds: map_bounds,
+		center: center,
+		maxZoom: zoomMax,
+		minZoom: zoomMin,
+		zoomSnap: 0.5,
+		zoomDelta: 0.5,
+		});
+
+	L.imageOverlay(map_url, map_bounds).addTo(map);
+	//map.fitBounds(map_bounds);
+	map.setView(center, zoomMin)
+	//console.log("Map bounds: " + map_bounds);
+	//console.log("height: " + map_height + " width: " + map_width);
+
+	// Fluff
+	L.marker([0, 0]).addTo(map);
+
+	function resizeMap(coordinates) {
+	}
+	
+	var popup = L.popup();
+
+	function onMapClick(e) {
+    	/*popup
+        	.setLatLng(e.latlng)
+        	.setContent("You clicked the map at " + e.latlng.toString())
+        	.openOn(map);*/
+		newLocation(e.latlng, map_id);
+	}
+
+	map.on('click', onMapClick);
+
+	function newLocation(coords, id) {
+		console.log(coords);
+		locData = {'xCoord': coords.lat, 'yCoord': coords.lng};
+		queryParam = encodeQuery(locData);
+		url = "/maps/" + id + "/new_location";
+		url += queryParam;
+		document.location.href = url;
+	}
+
+	function encodeQuery(data) {
+		let query = "?";
+		for (let d in data)
+			query += encodeURIComponent(d) + '=' 
+				+ encodeURIComponent(data[d]) + '&';
+		return query.slice(0, -1);
+	}
+
+</script>
+
+<!--
 
 <div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()" onclick="newLocation(event, '{{ map.id }}')">
 	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}" class=map>
@@ -37,6 +162,8 @@
 		{% endfor %}
 	</map>
 </div>
+
+-->
 
 <p id="displayArea2"></p>
 <p id="displayArea3"></p>
@@ -53,3 +180,5 @@
 </ul>
 
 {% endblock content %}
+</body>
+</html>

@@ -114,8 +114,8 @@ class Location(models.Model):
 	map = models.ForeignKey(Map, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200)
 	text = models.TextField()
-	xCoord = models.IntegerField()
-	yCoord = models.IntegerField()
+	xCoord = models.FloatField()
+	yCoord = models.FloatField()
 
 	def __str__(self):
 		return self.title
