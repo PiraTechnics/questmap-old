@@ -110,7 +110,7 @@ def map(request, map_id):
 	"""Show a single map"""
 	map = Map.objects.get(id=map_id)
 	locations = map.location_set.order_by('title')
-	context = {'map': map, 'locations': locations}
+	context = {'map': map, 'locations': list(locations.values())}
 	return render(request, 'maps/map.html', context)
 
 @login_required

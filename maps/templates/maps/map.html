@@ -5,149 +5,151 @@
 
 
 <head>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-crossorigin=""/>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+	crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" 
+	integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" 
+	crossorigin="">
+	</script>
 
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-crossorigin="">
-</script>
-
-<style>
-	#map { 
-		/* formula: https://levelup.gitconnected.com/dynamic-element-scaling-in-css-7e35ed9a3914*/
-		/*height: calc(240px + (1926 - 240) * ((100vw - 500px) / (1920 - 500)));*/
-		width: 80%;
-		aspect-ratio: 16/9;
-		/*height: 80%;*/
-		margin-left: auto;
-		margin-right: auto;
-		margin-top: 1%;
-		background-color: rgb(238, 232, 225);
-		border: 5px outset rgba(212, 187, 40, 0.801);
-	}
-</style>
-
+	<style>
+		#map { 
+			/* formula: https://levelup.gitconnected.com/dynamic-element-scaling-in-css-7e35ed9a3914*/
+			/*height: calc(240px + (1926 - 240) * ((100vw - 500px) / (1920 - 500)));*/
+			width: 80%;
+			aspect-ratio: 16/9;
+			/*height: 80%;*/
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 1%;
+			background-color: rgb(238, 232, 225);
+			border: 5px outset rgba(212, 187, 40, 0.801);
+		}
+	</style>
 </head>
-
-<!-- Trying something different, bear with me...
-
-WE're Using a library called 'Leaflet' to present our maps as tiled, zoomable interactive maps
-- Need to learn the library more
-- Need to convert static images into base tiles
-- remember -- you have stashed form stuff in your local git repo
--->
-
 <body>
 
-<div id="map"></div>
-<div id="image-map"></div>
+	<div id="map"></div>
+	{{ locations|json_script:"map_locations" }}
 
-<script type="text/javascript"
- defer 
- data-map-url='{{ map.map_image.url }}'
- data-map-height='{{ map.map_image.height }}'
- data-map-width='{{ map.map_image.width }}'
- data-map-id='{{ map.id }}'>
+	<script type="text/javascript"
+ 	defer 
+ 	data-map-url='{{ map.map_image.url }}'
+ 	data-map-height='{{ map.map_image.height }}'
+ 	data-map-width='{{ map.map_image.width }}'
+ 	data-map-id='{{ map.id }}'
+	>
 
-	//Define our image attibutes, passed from Django
-	const data = document.currentScript.dataset;
-	const map_id = data.mapId;
-	const map_url = data.mapUrl;
-	const map_height = data.mapHeight;
-	const map_width = data.mapWidth;
-	
-	//Get Map Container and Browser Window Dimensions
-	var mapDiv = document.getElementById("map");
-	var windowW = document.documentElement.clientWidth;
-	console.log("Window Width: " + windowW);
-	
-	var scaledImageW = map_width,
-		imageAspectR = map_width/map_height,
-		scaleFactor = 0,
-		zoomMin = 0,
-		zoomMax = 0;
-	
-	// Scale down Image if it is bigger than our screen
-	while(windowW < scaledImageW) {
-		scaledImageW /= 1.5; //Scale down -- might need to revisit this later
-		scaleFactor ++;
-	}
-	//console.log("Image scaled width: " + scaledImageW);
+		//Define our image attibutes, passed from Django
+		const data = document.currentScript.dataset;
+		const map_id = data.mapId;
+		const map_url = data.mapUrl;
+		const map_height = data.mapHeight;
+		const map_width = data.mapWidth;
+		
+		//Get Map Container and Browser Window Dimensions
+		var mapDiv = document.getElementById("map");
+		var windowW = document.documentElement.clientWidth;
+		console.log("Window Width: " + windowW);
+		
+		var scaledImageW = map_width,
+			imageAspectR = map_width/map_height,
+			scaleFactor = 0,
+			zoomMin = 0,
+			zoomMax = 0;
+		
+		// Scale down Image if it is bigger than our screen
+		while(windowW < scaledImageW) {
+			scaledImageW /= 1.5; //Scale down -- might need to revisit this later
+			scaleFactor ++;
+		}
+		//console.log("Image scaled width: " + scaledImageW);
 
-	//don't allow a scaleFactor greater than 3
-	if(scaleFactor >= 3) {
-		zoomMin = -2;
-		zoomMax = 1;
-	}
-	else {
-		zoomMin = -1;
-		zoomMax = 1;
-	}
+		//don't allow a scaleFactor greater than 3
+		if(scaleFactor >= 3) {
+			zoomMin = -2;
+			zoomMax = 1;
+		}
+		else {
+			zoomMin = -1;
+			zoomMax = 1;
+		}
 
-	//Scale Aspect Ratio for div to reflect image dimensions
-	mapDiv.style.aspectRatio = imageAspectR;
-	if(scaledImageW < windowW) {
-		//if image is smaller than screen, set it to same size
-		//mapDiv.style.width = scaledImageW;
-	}
+		//Scale Aspect Ratio for div to reflect image dimensions
+		mapDiv.style.aspectRatio = imageAspectR;
+		if(scaledImageW < windowW) {
+			//if image is smaller than screen, set it to same size
+			//mapDiv.style.width = scaledImageW;
+		}
 
-	//Initialize Leaflet Map
-	var map_bounds = [[0,0], [map_height, map_width]];
-	var center = [map_height/2, map_width/2];
-	var map = L.map('map', {
-		crs: L.CRS.Simple,
-		maxBounds: map_bounds,
-		center: center,
-		maxZoom: zoomMax,
-		minZoom: zoomMin,
-		zoomSnap: 0.5,
-		zoomDelta: 0.5,
+		//Initialize Leaflet Map
+		var map_bounds = [[0,0], [map_height, map_width]];
+		var center = [map_height/2, map_width/2];
+		var map = L.map('map', {
+			crs: L.CRS.Simple,
+			maxBounds: map_bounds,
+			center: center,
+			maxZoom: zoomMax,
+			minZoom: zoomMin,
+			zoomSnap: 0.5,
+			zoomDelta: 0.5,
+			});
+
+		L.imageOverlay(map_url, map_bounds).addTo(map);
+		//map.fitBounds(map_bounds);
+		map.setView(center, zoomMin)
+		//console.log("Map bounds: " + map_bounds);
+		//console.log("height: " + map_height + " width: " + map_width);
+
+		// Load locations from view and set markers on map
+		const locations = JSON.parse(document.getElementById("map_locations").textContent);
+		locations.forEach(location => {
+			console.log(location);
+			var marker = L.marker([location.xCoord, location.yCoord], title=location.title).addTo(map).bindPopup(title);
+			marker.on('click', function(){
+				//Generate URL based on location id
+				console.log(location.id);
+				//window.location.href = "location/" + location.id;
+				//window.location.replace("location/" + location.id); //This isn't stripping away the /maps/x part, need to do that
+				// NOTE: might need to try and get the django URL formula and add in the location id -- WITHOUT throwing a NoREverseMatch error
+			});
 		});
+		
+		function resizeMap(coordinates) {
+			//Note: Implement this and call it on window resize later on
+		}
+		
+		var popup = L.popup();
 
-	L.imageOverlay(map_url, map_bounds).addTo(map);
-	//map.fitBounds(map_bounds);
-	map.setView(center, zoomMin)
-	//console.log("Map bounds: " + map_bounds);
-	//console.log("height: " + map_height + " width: " + map_width);
+		function onMapClick(e) {
+			/*popup
+				.setLatLng(e.latlng)
+				.setContent("You clicked the map at " + e.latlng.toString())
+				.openOn(map);*/
+			newLocation(e.latlng, map_id);
+		}
 
-	// Fluff
-	L.marker([0, 0]).addTo(map);
+		map.on('click', onMapClick);
 
-	function resizeMap(coordinates) {
-	}
-	
-	var popup = L.popup();
+		function newLocation(coords, id) {
+			console.log(coords);
+			locData = {'xCoord': coords.lat, 'yCoord': coords.lng};
+			queryParam = encodeQuery(locData);
+			url = "/maps/" + id + "/new_location";
+			url += queryParam;
+			document.location.href = url;
+		}
 
-	function onMapClick(e) {
-    	/*popup
-        	.setLatLng(e.latlng)
-        	.setContent("You clicked the map at " + e.latlng.toString())
-        	.openOn(map);*/
-		newLocation(e.latlng, map_id);
-	}
+		function encodeQuery(data) {
+			let query = "?";
+			for (let d in data)
+				query += encodeURIComponent(d) + '=' 
+					+ encodeURIComponent(data[d]) + '&';
+			return query.slice(0, -1);
+		}
 
-	map.on('click', onMapClick);
-
-	function newLocation(coords, id) {
-		console.log(coords);
-		locData = {'xCoord': coords.lat, 'yCoord': coords.lng};
-		queryParam = encodeQuery(locData);
-		url = "/maps/" + id + "/new_location";
-		url += queryParam;
-		document.location.href = url;
-	}
-
-	function encodeQuery(data) {
-		let query = "?";
-		for (let d in data)
-			query += encodeURIComponent(d) + '=' 
-				+ encodeURIComponent(data[d]) + '&';
-		return query.slice(0, -1);
-	}
-
-</script>
+	</script>
 
 <!--
 
@@ -172,7 +174,7 @@ WE're Using a library called 'Leaflet' to present our maps as tiled, zoomable in
 <ul>
 	{% for location in locations %}
 		<li>
-			<a href="{% url 'maps:location' location.id %}">{{ location }}</a>
+			<a href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
 		</li>
 	{% empty %}
 		<li>There are no locations for this map yet.</li>
