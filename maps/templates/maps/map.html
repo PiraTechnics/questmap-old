@@ -105,13 +105,21 @@
 		// Load locations from view and set markers on map
 		const locations = JSON.parse(document.getElementById("map_locations").textContent);
 		locations.forEach(location => {
-			console.log(location);
-			var marker = L.marker([location.xCoord, location.yCoord], title=location.title).addTo(map).bindPopup(title);
+			console.log(location.id + ": " + location.title);
+
+			//get the link to each location (a element later in doc)
+			var markerUrl = document.getElementById(location.id);
+
+			//Create marker at each location's coordinates
+			var marker = L.marker([location.xCoord, location.yCoord], title=location.title,
+				id=location.id).addTo(map).bindPopup(title);
 			marker.on('click', function(){
-				//Generate URL based on location id
-				console.log(location.id);
-				//window.location.href = "location/" + location.id;
-				//window.location.replace("location/" + location.id); //This isn't stripping away the /maps/x part, need to do that
+			
+			//Generate URL based on location id
+			console.log(location.id);
+			//window.location.href = markerUrl; --> this doesn't work
+
+				//var url = document.getElementById()
 				// NOTE: might need to try and get the django URL formula and add in the location id -- WITHOUT throwing a NoREverseMatch error
 			});
 		});
@@ -119,24 +127,15 @@
 		function resizeMap(coordinates) {
 			//Note: Implement this and call it on window resize later on
 		}
-		
-		var popup = L.popup();
 
-		function onMapClick(e) {
-			/*popup
-				.setLatLng(e.latlng)
-				.setContent("You clicked the map at " + e.latlng.toString())
-				.openOn(map);*/
-			newLocation(e.latlng, map_id);
-		}
+		map.on('click', newLocation);
 
-		map.on('click', onMapClick);
-
-		function newLocation(coords, id) {
+		function newLocation(e) {
+			coords = e.latlng;
 			console.log(coords);
 			locData = {'xCoord': coords.lat, 'yCoord': coords.lng};
 			queryParam = encodeQuery(locData);
-			url = "/maps/" + id + "/new_location";
+			url = "/maps/" + map_id + "/new_location";
 			url += queryParam;
 			document.location.href = url;
 		}
@@ -151,30 +150,11 @@
 
 	</script>
 
-<!--
-
-<div id="mapView" onmousemove="trackCoords(event)" onmouseout="stopTracking()" onclick="newLocation(event, '{{ map.id }}')">
-	<img id="map" src="{{ map.map_image.url }}" alt="{{ map.map_title }}" usemap="#{{ map.map_title }}" class=map>
-
-	<map name ="{{ map.map_title }}">
- 		{% for location in locations %}
-			<div class="maparea">
-				<area class="location" id="{{ location.title }}" shape="circle" coords="{{ location.xCoord }},{{ location.yCoord }},20" alt="{{ location.title }}" href="{% url 'maps:location' location.id %}">
-			</div>
-		{% endfor %}
-	</map>
-</div>
-
--->
-
-<p id="displayArea2"></p>
-<p id="displayArea3"></p>
-
 <p>Locations:</p>
 <ul>
 	{% for location in locations %}
 		<li>
-			<a href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
+			<a class="location-link" id={{location.title}} href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
 		</li>
 	{% empty %}
 		<li>There are no locations for this map yet.</li>
