@@ -2,8 +2,6 @@
 {% block content %}
 
 {% load static %}
-
-
 <head>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -28,7 +26,13 @@
 		}
 	</style>
 </head>
+
 <body>
+
+	{% for location in locations %}
+		<a hidden class="location-link" id="{{location.title}}" href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
+	{% empty %}
+	{% endfor %}
 
 	<div id="map"></div>
 	{{ locations|json_script:"map_locations" }}
@@ -38,8 +42,7 @@
  	data-map-url='{{ map.map_image.url }}'
  	data-map-height='{{ map.map_image.height }}'
  	data-map-width='{{ map.map_image.width }}'
- 	data-map-id='{{ map.id }}'
-	>
+ 	data-map-id='{{ map.id }}'>
 
 		//Define our image attibutes, passed from Django
 		const data = document.currentScript.dataset;
@@ -47,88 +50,87 @@
 		const map_url = data.mapUrl;
 		const map_height = data.mapHeight;
 		const map_width = data.mapWidth;
-		
-		//Get Map Container and Browser Window Dimensions
-		var mapDiv = document.getElementById("map");
-		var windowW = document.documentElement.clientWidth;
-		console.log("Window Width: " + windowW);
-		
-		var scaledImageW = map_width,
-			imageAspectR = map_width/map_height,
-			scaleFactor = 0,
-			zoomMin = 0,
-			zoomMax = 0;
-		
-		// Scale down Image if it is bigger than our screen
-		while(windowW < scaledImageW) {
-			scaledImageW /= 1.5; //Scale down -- might need to revisit this later
-			scaleFactor ++;
-		}
-		//console.log("Image scaled width: " + scaledImageW);
+		window.onload = initMap();
 
-		//don't allow a scaleFactor greater than 3
-		if(scaleFactor >= 3) {
-			zoomMin = -2;
-			zoomMax = 1;
-		}
-		else {
-			zoomMin = -1;
-			zoomMax = 1;
-		}
-
-		//Scale Aspect Ratio for div to reflect image dimensions
-		mapDiv.style.aspectRatio = imageAspectR;
-		if(scaledImageW < windowW) {
-			//if image is smaller than screen, set it to same size
-			//mapDiv.style.width = scaledImageW;
-		}
-
-		//Initialize Leaflet Map
-		var map_bounds = [[0,0], [map_height, map_width]];
-		var center = [map_height/2, map_width/2];
-		var map = L.map('map', {
-			crs: L.CRS.Simple,
-			maxBounds: map_bounds,
-			center: center,
-			maxZoom: zoomMax,
-			minZoom: zoomMin,
-			zoomSnap: 0.5,
-			zoomDelta: 0.5,
-			});
-
-		L.imageOverlay(map_url, map_bounds).addTo(map);
-		//map.fitBounds(map_bounds);
-		map.setView(center, zoomMin)
-		//console.log("Map bounds: " + map_bounds);
-		//console.log("height: " + map_height + " width: " + map_width);
-
-		// Load locations from view and set markers on map
-		const locations = JSON.parse(document.getElementById("map_locations").textContent);
-		locations.forEach(location => {
-			console.log(location.id + ": " + location.title);
-
-			//get the link to each location (a element later in doc)
-			var markerUrl = document.getElementById(location.id);
-
-			//Create marker at each location's coordinates
-			var marker = L.marker([location.xCoord, location.yCoord], title=location.title,
-				id=location.id).addTo(map).bindPopup(title);
-			marker.on('click', function(){
+		function initMap() {
+			//Get Map Container and Browser Window Dimensions
+			var mapDiv = document.getElementById("map");
+			var windowW = document.documentElement.clientWidth;
+			//console.log("Window Width: " + windowW);
+			var scaledImageW = map_width,
+				imageAspectR = map_width/map_height,
+				scaleFactor = 0,
+				zoomMin = 0,
+				zoomMax = 0;
 			
-			//Generate URL based on location id
-			console.log(location.id);
-			//window.location.href = markerUrl; --> this doesn't work
+			// Scale down Image if it is bigger than our screen
+			while(windowW < scaledImageW) {
+				scaledImageW /= 1.5; //Scale down -- might need to revisit this later
+				scaleFactor ++;
+			}
+			//console.log("Image scaled width: " + scaledImageW);
 
-				//var url = document.getElementById()
-				// NOTE: might need to try and get the django URL formula and add in the location id -- WITHOUT throwing a NoREverseMatch error
+			//don't allow a scaleFactor greater than 3
+			if(scaleFactor >= 3) {
+				zoomMin = -2;
+				zoomMax = 1;
+			}
+			else {
+				zoomMin = -1;
+				zoomMax = 1;
+			}
+
+			//Scale Aspect Ratio for div to reflect image dimensions
+			mapDiv.style.aspectRatio = imageAspectR;
+			if(scaledImageW < windowW) {
+				//if image is smaller than screen, set it to same size
+				//mapDiv.style.width = scaledImageW;
+			}
+
+			//Initialize Leaflet Map
+			var map_bounds = [[0,0], [map_height, map_width]];
+			var center = [map_height/2, map_width/2];
+			var map = L.map('map', {
+				crs: L.CRS.Simple,
+				maxBounds: map_bounds,
+				center: center,
+				maxZoom: zoomMax,
+				minZoom: zoomMin,
+				zoomSnap: 0.5,
+				zoomDelta: 0.5,
+				});
+
+			L.imageOverlay(map_url, map_bounds).addTo(map);
+			//map.fitBounds(map_bounds);
+			map.setView(center, zoomMin)
+			//console.log("Map bounds: " + map_bounds);
+			//console.log("height: " + map_height + " width: " + map_width);
+
+			// Load locations from view and set markers on map
+			const locations = JSON.parse(document.getElementById("map_locations").textContent);
+			locations.forEach(location => {
+				//Create marker at each location's coordinates
+				var marker = L.marker(
+					[location.xCoord, location.yCoord],
+					title=location.title,
+					id=location.id
+					).addTo(map).bindPopup(title);
+				//get the link to each location (a element later in doc)
+				var markerUrl = document.getElementById(location.title);
+				marker.on('click', function(){
+					//Generate URL based on location id
+					window.location.href = markerUrl;
+				});
 			});
-		});
+
+			// Redirect to new_location on map click
+			map.on('click', newLocation);
+		}
 		
+		// Helper Functions (refactor to map.js eventually)
 		function resizeMap(coordinates) {
 			//Note: Implement this and call it on window resize later on
 		}
-
-		map.on('click', newLocation);
 
 		function newLocation(e) {
 			coords = e.latlng;
@@ -149,17 +151,6 @@
 		}
 
 	</script>
-
-<p>Locations:</p>
-<ul>
-	{% for location in locations %}
-		<li>
-			<a class="location-link" id={{location.title}} href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
-		</li>
-	{% empty %}
-		<li>There are no locations for this map yet.</li>
-	{% endfor %}
-</ul>
 
 {% endblock content %}
 </body>
