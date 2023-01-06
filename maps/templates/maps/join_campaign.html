@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+    <h3 class="title">Campaign: {{ campaign.title }}</h3>
+    <p class="subtitle">{{ campaign.description }}</p>
+    <p class="center">Game Master: {{ campaign.user }}</p>
+
+    <h4> Join with Character: </h4>
+    <form action="{% url 'maps:join_campaign' campaign.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Join Campaign</button>
+    </form>
+</body>
+{% endblock content %}
+
+</html>

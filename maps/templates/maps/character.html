@@ -7,7 +7,13 @@
     </div>
     <div class="center">
     <p>Level {{ character.char_level }} {{ character.char_lineage }} {{ character.char_class }}</p>
-    <p>Campaign: <a href="{% url 'maps:campaign' character.campaign.id %}">{{ character.campaign }}</a></p>
+    <p>Campaign: 
+		{% if character.campaign != null %}
+		<a href="{% url 'maps:campaign' character.campaign.id %}">{{ character.campaign }}</a>
+		{% else %}
+		None
+		{% endif %}
+	</p>
     <p>Played by {{ character.user }}</p>
 
 	<h3 class="listheader">Notes:</h3>

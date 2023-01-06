@@ -114,7 +114,7 @@
 					[location.xCoord, location.yCoord],
 					title=location.title,
 					id=location.id
-					).addTo(map).bindPopup(title);
+					).addTo(map).bindTooltip(title);
 				//get the link to each location (a element later in doc)
 				var markerUrl = document.getElementById(location.title);
 				marker.on('click', function(){
