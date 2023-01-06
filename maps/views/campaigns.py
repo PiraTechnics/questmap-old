@@ -55,7 +55,9 @@ def join_campaign(request, camp_id):
 	
 	if request.method != 'POST':
 		form = JoinCampaignForm()
-		# PROB NEED TO CHANGE THIS --> form.fields['character'].queryset = Character.objects.filter(user=request.user).filter(campaign=None)
+		# Only allow choice of character to be one of the user's current characters, that has no campaign
+		form.fields['character'].choices = Character.objects.filter(user=request.user).filter(campaign=None)
+		# This doesn't seem to work, we don't populate the field...
 	else:
 		# POST data submitted - process it
 		form = JoinCampaignForm(request.POST)

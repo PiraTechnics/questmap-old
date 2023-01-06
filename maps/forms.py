@@ -41,13 +41,6 @@ class NoteForm(forms.ModelForm):
 		labels = {'content': '', 'author': 'Author'}
 		widgets = {'content': forms.Textarea(attrs={'cols': 50, 'rows': 10})}
 
-	#author = forms.ModelChoiceField(queryset=Character.objects.filter())
-	#  ^^we don't need this anymore
-
-#class JoinCampaignForm(forms.Form):
-#	character = forms.ModelChoiceField(queryset=Character.objects.all(), initial=0)
-
-class JoinCampaignForm(forms.ModelForm):
-	class Meta:
-		model = Character
-		fields =['campaign']
+class JoinCampaignForm(forms.Form):
+	character = forms.CharField(widget=forms.Select)
+	# This creates a select field but doesn't populate it
