@@ -52,27 +52,26 @@ def new_campaign(request):
 @permission_required('maps.view_character', 'maps.change_character', raise_exception=True)
 def join_campaign(request, camp_id):
 	campaign = Campaign.objects.get(id=camp_id)
+	char_names = Character.objects.values_list('id', 'char_name').filter(user=request.user).filter(campaign=None)
 	
 	if request.method != 'POST':
 		form = JoinCampaignForm()
 		# Only allow choice of character to be one of the user's current characters, that has no campaign
-		form.fields['character'].choices = Character.objects.filter(user=request.user).filter(campaign=None)
-		# This doesn't seem to work, we don't populate the field...
+		form.fields['character'].choices = char_names
 	else:
 		# POST data submitted - process it
 		form = JoinCampaignForm(request.POST)
 		if form.is_valid():
-			#character = form.cleaned_data['character']
-			#pc_entry = Character.objects.get(char_name=character)
-			#pc_entry.campaign = campaign
-			#not failing, but this doesn't appear to do anything...
-			form.save()
+			character = form.cleaned_data['character']
+			pc_entry = Character.objects.get(id=character)
+			pc_entry.campaign = campaign
+			pc_entry.save()
 			return render_campaign(request, campaign)
 
 	# Display a blank or invalid form
+	form.fields['character'].choices = char_names # clean up this code -- calling this twice but should redesign order to only need once
 	context = {'form': form, 'campaign': campaign}
-	return render(request, 'maps/join_campaign.html', context) # BUG: IF user has no characters and submits anyway, they get access to all the characters
-	# need to filter on this as well -- invalid form behavior
+	return render(request, 'maps/join_campaign.html', context)
 
 
 """Verify an invite from GM, then allow user to join the specific campaign

@@ -42,5 +42,4 @@ class NoteForm(forms.ModelForm):
 		widgets = {'content': forms.Textarea(attrs={'cols': 50, 'rows': 10})}
 
 class JoinCampaignForm(forms.Form):
-	character = forms.CharField(widget=forms.Select)
-	# This creates a select field but doesn't populate it
+	character = forms.ChoiceField(choices=Character.objects.values_list('id', 'char_name'))

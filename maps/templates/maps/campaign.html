@@ -23,6 +23,9 @@
                 <li>There are no maps for this campaign!</li>
             {% endfor %}
         </ul>
+    <form class="footerform" action="{% url 'maps:join_campaign' campaign.id %}">
+        <input type="submit" value="Join This Campaign" />
+    </form>
 </body>
 {% endblock content %}
 
