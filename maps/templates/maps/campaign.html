@@ -26,6 +26,10 @@
     <form class="footerform" action="{% url 'maps:join_campaign' campaign.id %}">
         <input type="submit" value="Join This Campaign" />
     </form>
+    
+    <form class="footerform" action="{% url 'maps:edit_campaign' campaign.id %}">
+        <input type="submit" value="Edit Campaign" />
+    </form>
 </body>
 {% endblock content %}
 

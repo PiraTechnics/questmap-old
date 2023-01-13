@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+    <h4> Edit Campaign </h4>
+    <form action="{% url 'maps:edit_campaign' campaign.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Submit Changes</button>
+    </form>
+</body>
+{% endblock content %}
+
+</html>

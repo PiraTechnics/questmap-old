@@ -11,6 +11,8 @@ urlpatterns = [
 	path('campaigns/<int:camp_id>', views.campaign, name='campaign'),
 	# Path for adding a new Campaign
 	path('campaigns/new_campaign', views.new_campaign, name='new_campaign'),
+	# Path for editing/deleting a Campaign
+	path('campaigns/edit/<int:camp_id>', views.edit_campaign, name='edit_campaign'),	
 	# Path for joining a Campaign as a Player
 	path('campaigns/join/<int:camp_id>', views.join_campaign, name='join_campaign'),
 	# Page to show links to all characters

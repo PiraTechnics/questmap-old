@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied, BadRequest
 from django.contrib import messages
@@ -23,7 +23,7 @@ def campaigns(request):
 def campaign(request, camp_id):
 	"""Show a single campaign"""
 	campaign = Campaign.objects.get(id=camp_id)
-	if check_campaign_access(request.user, campaign):
+	if is_campaign_owner(request.user, campaign) or is_campaign_player(request.user, campaign):
 		return render_campaign(request, campaign)
 	else:
 		raise PermissionDenied
@@ -77,39 +77,49 @@ def join_campaign(request, camp_id):
 """Verify an invite from GM, then allow user to join the specific campaign
 How to do this? A unique token? a prefilled form? etc etc"""
 
-""" -- WIP
 @login_required
 @permission_required('maps.change_campaign', 'maps.delete_campaign', raise_exception=True)
 def edit_campaign(request, camp_id):
 	#Allow a GM to edit their own Campaign
 	campaign = Campaign.objects.get(id=camp_id)
+	campaign_obj = get_object_or_404(Campaign, id=camp_id)
 	# Ensure user is the campaign's owner
-	if request.user != campaign.user:
+	if is_campaign_owner(request.user, campaign):
+		form = CampaignForm(request.POST or None, instance=campaign_obj)
+
+		if form.is_valid():
+			form.save()
+			return render_campaign(request, campaign_obj)
+
+		else:
+			# Serve Blank or invalid form
+			context = {'form': form, 'campaign': campaign}
+			return render(request, "maps/edit_campaign.html", context)
+
+		#context['data'] = Campaign.objects.get(id=camp_id)
+
+		#characters = Character.objects.filter(campaign=camp_id)
+		#maps = Map.objects.filter(campaign=camp_id)
+		#context = {'campaign': campaign, 'characters': characters, 'maps': maps}
+		#return render(request, 'maps/edit_campaign.html', context)
+	else:
 		# Give us a permission denied
 		raise PermissionDenied
-	else: # user validated -- let them edit it
-		characters = Character.objects.filter(campaign=camp_id)
-		maps = Map.objects.filter(campaign=camp_id)
-		context = {'campaign': campaign, 'characters': characters, 'maps': maps}
-		return render(request, 'maps/edit_campaign.html', context)
-"""
+
 
 # Helper Functions
 
-def check_campaign_access(user, campaign):
-	is_player = False
-	is_gm = False
+def is_campaign_player(user, campaign):
 	characters = Character.objects.filter(campaign=campaign.id)
-	# Check if user has a character in campaign
 	for char in characters:
 		if user == char.user:
-			is_player = True
-			break
-	# Check if user is owner of campaign
-	if user == campaign.user:
-		is_gm = True
+			return True
+	
+	# If we didnt find a character belonging to user in campaign, not a player
+	return False
 
-	return is_player or is_gm
+def is_campaign_owner(user, campaign):
+	return user == campaign.user
 
 def render_campaign(request, campaign):
 		characters = Character.objects.filter(campaign=campaign.id)
