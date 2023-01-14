@@ -86,22 +86,24 @@ def edit_campaign(request, camp_id):
 	# Ensure user is the campaign's owner
 	if is_campaign_owner(request.user, campaign):
 		form = CampaignForm(request.POST or None, instance=campaign_obj)
-
-		if form.is_valid():
-			form.save()
-			return render_campaign(request, campaign_obj)
-
+		
+		if 'update' in request.POST:
+			# update/edit campaign with changes
+			if form.is_valid():
+				form.save()
+				return render_campaign(request, campaign_obj)
+			else:
+				# Serve Blank or invalid form
+				context = {'form': form, 'campaign': campaign}
+				return render(request, "maps/edit_campaign.html", context)
+		elif 'delete' in request.POST:
+			# Delete campaign
+			campaign_obj.delete()
+			return redirect('maps:campaigns')
 		else:
 			# Serve Blank or invalid form
 			context = {'form': form, 'campaign': campaign}
 			return render(request, "maps/edit_campaign.html", context)
-
-		#context['data'] = Campaign.objects.get(id=camp_id)
-
-		#characters = Character.objects.filter(campaign=camp_id)
-		#maps = Map.objects.filter(campaign=camp_id)
-		#context = {'campaign': campaign, 'characters': characters, 'maps': maps}
-		#return render(request, 'maps/edit_campaign.html', context)
 	else:
 		# Give us a permission denied
 		raise PermissionDenied

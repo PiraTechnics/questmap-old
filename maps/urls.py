@@ -15,18 +15,23 @@ urlpatterns = [
 	path('campaigns/edit/<int:camp_id>', views.edit_campaign, name='edit_campaign'),	
 	# Path for joining a Campaign as a Player
 	path('campaigns/join/<int:camp_id>', views.join_campaign, name='join_campaign'),
+
 	# Page to show links to all characters
 	path('characters/', views.characters, name='characters'),
 	# Page to show a single character's profile
 	path('characters/<int:char_id>', views.character, name='character'),
 	# Page for adding a new character
 	path('characters/new_character', views.new_character, name='new_character'),
+	# Page for editing/deleting a Character
+	path('characters/edit/<int:char_id>', views.edit_character, name='edit_character'),
+
 	# Page to show links to all maps
 	path('maps/', views.maps, name = 'maps'),
 	# Page to display a single map
 	path('maps/<int:map_id>/', views.map, name='map'),
 	# Page for adding a new map
 	path('maps/new_map', views.new_map, name='new_map'),
+
 	# Page to display a single location, and all notes about it
 	# Also includes a form to add new notes
 	path('locations/<int:location_id>/', views.location, name='location'),

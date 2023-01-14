@@ -26,8 +26,12 @@
 		{% empty %}
 		<li>This Character has no notes!</li>
 	{% endfor %}
-
     </div>
+
+	<form class="footerform" action="{% url 'maps:edit_character' character.id %}">
+        <input type="submit" value="Edit Character" />
+    </form>
+
 </body>
 {% endblock content %}
 

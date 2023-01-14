@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
 
 from maps.models import Character, Note
 from maps.forms import CharacterForm
@@ -43,3 +44,33 @@ def new_character(request):
 	# Display a blank or invalid form
 	context = {'form': form}
 	return render(request, 'maps/new_character.html', context)
+
+@login_required
+@permission_required('maps.change_character', 'maps.delete_character', raise_exception=True)
+def edit_character(request, char_id):
+	# Ensure User owns the character we are editing/deleting
+	character = get_object_or_404(Character, id=char_id)
+	if(character.user == request.user):
+		# USer owns the character
+		form = CharacterForm(request.POST or None, instance=character)
+
+		if 'update' in request.POST:
+			if form.is_valid():
+				form.save()
+				notes = Note.objects.filter(author=character)
+				context = {'character': character, 'notes': notes}
+				return render(request, 'maps/character.html', context)
+			else:
+				# Return blank or invalid form
+				context = {'form': form, 'character': character}
+				return render(request, "maps/edit_character.html", context)
+		elif 'delete' in request.POST:
+			character.delete()
+			return redirect('maps:characters')
+		else:
+			# Return blank or invalid form
+			context = {'form': form, 'character': character}
+			return render(request, "maps/edit_character.html", context)
+
+	else:
+		raise PermissionDenied
