@@ -30,9 +30,9 @@ ul {
 
 
 .header-bar {
-	padding-top: 10px;
+	/*padding-top: 10px;
 	padding-bottom: 2px;
-	margin: 5px 25%;
+	margin: 5px 25%;*/
 	border-style: ridge;
 	background-color: rgb(243, 242, 242);
 }
@@ -42,8 +42,8 @@ ul {
 }
 
 .bar-button {
-	display:inline-block;
-	padding:8px 12px; /* top & bottom padding 8x, left & right padding 12px */
+	/*display:inline-block;
+	/*padding:8px 12px; /* top & bottom padding 8x, left & right padding 12px */
 	vertical-align:middle;
 	overflow:hidden;
 	color:black;

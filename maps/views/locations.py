@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import PermissionDenied
 
 from maps.models import Character, Map, Location
 from maps.forms import LocationForm, NoteForm
@@ -59,3 +60,36 @@ def new_location(request, map_id):
 	# Display blank or invalid form
 	context = {'map': map, 'form': form}
 	return render(request, 'maps/new_location.html', context)
+
+@login_required
+@permission_required('maps.change_location', 'maps.delete_location', raise_exception=True)
+def edit_location(request, location_id):
+
+
+	# Ensure User owns the location (by extension the map) we are editing/deleting
+	location = get_object_or_404(Location, id=location_id)
+	if(location.user == request.user):
+		# User owns the location
+		form = LocationForm(request.POST or None, instance=location)
+
+		if 'update' in request.POST:
+			if form.is_valid():
+				form.save()
+				return render(request, 'maps/location.html', {'location': location})
+			else:
+				# Return blank or invalid form
+				context = {'form': form, 'location': location}
+				return render(request, "maps/edit_location.html", context)
+		elif 'delete' in request.POST:
+			map = get_object_or_404(Map, id=location.map.id)
+			location.delete()
+			locations = map.location_set.order_by('title')
+			context = {'map': map, 'locations': list(locations.values())}
+			return render(request, "maps/map.html", context)
+		else:
+			# Return blank or invalid form
+			context = {'form': form, 'location': location}
+			return render(request, "maps/edit_location.html", context)
+
+	else:
+		raise PermissionDenied

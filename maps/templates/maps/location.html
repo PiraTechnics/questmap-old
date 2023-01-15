@@ -24,6 +24,10 @@
 		<button name="submit">Add Note</button>
 	</form>
 
+    <form class="footerform" action="{% url 'maps:edit_location' location.id %}">
+        <input type="submit" value="Edit Location" />
+    </form>
+
 </body>
 
 {% endblock content %}

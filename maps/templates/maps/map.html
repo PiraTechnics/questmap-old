@@ -15,12 +15,12 @@
 		#map { 
 			/* formula: https://levelup.gitconnected.com/dynamic-element-scaling-in-css-7e35ed9a3914*/
 			/*height: calc(240px + (1926 - 240) * ((100vw - 500px) / (1920 - 500)));*/
-			width: 80%;
-			aspect-ratio: 16/9;
-			/*height: 80%;*/
-			margin-left: auto;
-			margin-right: auto;
-			margin-top: 1%;
+			width: 100%;
+			/*aspect-ratio: 16/9;*/
+			height: 100%;
+			/*margin-left: auto;
+			margin-right: auto;*/
+			margin-top: 2px;
 			background-color: rgb(238, 232, 225);
 			border: 5px outset rgba(212, 187, 40, 0.801);
 		}
@@ -102,7 +102,7 @@
 
 			L.imageOverlay(map_url, map_bounds).addTo(map);
 			//map.fitBounds(map_bounds);
-			map.setView(center, zoomMin)
+			map.setView(center, zoomMin+1)
 			//console.log("Map bounds: " + map_bounds);
 			//console.log("height: " + map_height + " width: " + map_width);
 

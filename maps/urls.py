@@ -37,4 +37,6 @@ urlpatterns = [
 	path('locations/<int:location_id>/', views.location, name='location'),
 	# Page for adding a new location
 	path('maps/<int:map_id>/new_location', views.new_location, name='new_location'),
+	# Page for editing/deleting a location
+	path('maps/edit/<int:location_id>', views.edit_location, name='edit_location'),
 ]
