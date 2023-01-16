@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
+<article class="grid">
+<div>
+	<p>Hello, Adventurer!</p>
+
+<div>
 {% if form.errors %}
 	<p>Your username and password didn't match. Please try again.</p>
 {% endif %}
+</div>
 
 <form method="post" action="{% url 'users:login' %}">
 	{% csrf_token %}
@@ -12,5 +19,11 @@
 	<button name="submit">Log in</button>
 	<input type="hidden" name="next" value="{% url 'maps:index' %}" />
 </form>
+</div>
+<div>
+	<img src="{% static 'images/stockmap.jpg' %}">
+</div>
+
+</article>
 
 {% endblock content %}

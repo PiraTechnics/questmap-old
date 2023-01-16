@@ -41,6 +41,11 @@ ul {
 	display: flex;
 }
 
+article {
+	margin-left: 2% !important;
+	margin-right: 2% !important;
+}
+
 .bar-button {
 	/*display:inline-block;
 	/*padding:8px 12px; /* top & bottom padding 8x, left & right padding 12px */
