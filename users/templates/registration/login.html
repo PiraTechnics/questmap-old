@@ -2,28 +2,28 @@
 {% load static %}
 {% block content %}
 
-<article class="grid">
-<div>
-	<p>Hello, Adventurer!</p>
+<main class="container">
+	<article class="grid">
+		<div>
+			<hgroup>
+				<h1>Sign In</h1>
+				<p>Adventure Awaits!</p>
+				<div>
+					{% if form.errors %}
+					<p>Your username and password didn't match. Please try again.</p>
+					{% endif %}
+				</div>
+			</hgroup>
 
-<div>
-{% if form.errors %}
-	<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-</div>
-
-<form method="post" action="{% url 'users:login' %}">
-	{% csrf_token %}
-	{{ form.as_p }}
-
-	<button name="submit">Log in</button>
-	<input type="hidden" name="next" value="{% url 'maps:index' %}" />
-</form>
-</div>
-<div>
-	<img src="{% static 'images/stockmap.jpg' %}">
-</div>
-
-</article>
+			<form method="post" action="{% url 'users:login' %}">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button name="submit">Log in</button>
+				<input type="hidden" name="next" value="{% url 'maps:index' %}" />
+			</form>
+		</div>
+		<div class="login-img"></div>
+	</article>
+</main>
 
 {% endblock content %}

@@ -1,20 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<body>
-	<h2 class="title">Campaigns</h2>
-	<ul>
-		{% for campaign in campaigns %}
-			<li><a href="{% url 'maps:campaign' campaign.id %}">{{ campaign.title }}</a></li>
-		{% empty %}
-			<li>You don't have any Campaigns!</li>
-		{% endfor %}
-	</ul>
-</body>
+<p class="title">My Campaigns</p>
+<ul>
+	{% for campaign in campaigns %}
+		<li><a href="{% url 'maps:campaign' campaign.id %}">{{ campaign.title }}</a></li>
+	{% empty %}
+		<li>You don't have any Campaigns!</li>
+	{% endfor %}
+</ul>
 
-<form class="center footer" action="{% url 'maps:new_campaign' %}" method="GET">
-	<button>New Campaign</button>
-</form>
+<a role="button" href="{% url 'maps:new_campaign' %}">New Campaign</a>
 
 {% endblock content %}
 

@@ -1,24 +1,41 @@
 {% load static %}
+<!DOCTYPE html><html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="{% static 'base.css' %}">
-<!--<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">-->
 <link rel="stylesheet" href="{% static 'pico/pico.min.css' %}">
 
-<header><div class="header-bar">
-	{% if user.is_authenticated %}
-		<p>
-			<a class="bar-button" href="{% url 'maps:index' %}">Home</a>
-			<a class="bar-button" href="{% url 'maps:maps' %}">Maps</a>
-			<a class="bar-button" href="{% url 'maps:characters' %}">Characters</a>
-			<a class="bar-button" href="{% url 'maps:campaigns' %}">Campaigns</a>
-			<div class="user">Logged in as: <a href="{% url 'users:profile' user.username %}">{{ user.username }}</a> - <a href="{% url 'users:logout' %}">Log out</a></p></div>
-		</p>
-	{% else %}
-		<a class="bar-button" href="{% url 'users:login' %}">Log in</a>	
-		<a class="bar-button" href="{% url 'users:register' %}">Register</a>
-	{% endif %}
-</div></header>
+<head>
+	<nav>
+		<ul>
+			<li><strong class="title">QuestMap</strong></li>
+		</ul>
 
+		<ul>
+			{% if user.is_authenticated %}
+			<li><a href="{% url 'maps:index' %}">Home</a></li>
+			<li><a href="{% url 'maps:maps' %}">Maps</a></li>
+			<li><a href="{% url 'maps:characters' %}">Characters</a></li>
+			<li><a href="{% url 'maps:campaigns' %}">Campaigns</a></li>
+		</ul>
 
-{% block content %}
-{% endblock content %}
+		<ul>
+			<li><div class="user">Logged in as:
+				<a href="{% url 'users:profile' user.username %}">{{ user.username }}</a> -
+				<a href="{% url 'users:logout' %}">Log out</a>
+			</div></li>
+			
+			{% else %}
+			<li><a href="{% url 'users:login' %}">Log in</a></li>
+			<li><a href="{% url 'users:register' %}">Register</a></li>
+			{% endif %}
+		</ul>
+	</nav>
+</head>
+
+<body>
+	<main class="container"> <!--NOTE: might want to change this to something more custom -- allow for thinner margins etc -->
+		{% block content %}
+		{% endblock content %}
+	</main>
+</body>
+</html>

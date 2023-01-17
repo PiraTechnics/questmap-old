@@ -2,11 +2,12 @@
 
 {% block content %}
 <h3>Add new Character:</h3>
-
-<form action="{% url 'maps:new_character' %}" method='post' enctype='multipart/form-data'>
-	{% csrf_token %}
-	{{ form.as_p }}
-    <button name="submit">Create Character</button>
-</form>
+<article class="grid">
+	<form action="{% url 'maps:new_character' %}" method='post' enctype='multipart/form-data'>
+		{% csrf_token %}
+		{{ form }}
+		<button name="submit">Create Character</button>
+	</form>
+</article>
 
 {% endblock content %}

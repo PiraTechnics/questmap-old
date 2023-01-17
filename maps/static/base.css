@@ -1,85 +1,54 @@
-header {
-	text-align: center;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	font-weight: bold;
-}
+/* Login Page image */
+.login-img {
+	background-color: #374956;
+	background-image: url("images/stockmap.jpg");
+	background-position: center;
+	background-size: cover;
+  }
 
 .title {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	text-align: center;
 	text-shadow: 1px 1px 2px gray;
-}
-
-.subtitle {
-	text-align: center;
-}
-
-ul {
-    display: table; 
-    margin: 0 auto;
-    text-align: left;
-}
-
-.center {
-	text-align: center;
-}
-
-.footer {
-	padding-top: 25px;
-}
-
-
-.header-bar {
-	/*padding-top: 10px;
-	padding-bottom: 2px;
-	margin: 5px 25%;*/
-	border-style: ridge;
-	background-color: rgb(243, 242, 242);
-}
-
-.menu-bar {
-	display: flex;
-}
-
-article {
-	margin-left: 2% !important;
-	margin-right: 2% !important;
-}
-
-.bar-button {
-	/*display:inline-block;
-	/*padding:8px 12px; /* top & bottom padding 8x, left & right padding 12px */
-	vertical-align:middle;
-	overflow:hidden;
-	color:black;
-	text-decoration:none; /* hides underlines for links */
-	text-align:center;
-	background-color: white;
-	border-style: groove;
-	border-color: grey;
-	border-width: 1px;
-	transition: .3s linear all; /* draws out the hover effect */
-}
-
-.bar-button:hover {
-	background-color: lightgray;
-	color: rgb(16, 61, 158);
-	box-shadow: 0px 50px 5px rgba(0, 0, 0, 0.15) inset;
+	font-size: larger;
 }
 
 .user {
-	text-align: right;
 	padding-right: 5px;
 	margin-bottom: -15px;
 	font-family: 'Times New Roman', Times, serif;
 	font-size: 12px;
 }
 
+.footer {
+	padding-top: 25px;
+}
+
+/* WIP -- look to come back to this later
+.entry-grid {
+	display: grid;
+	grid-template-columns: 100px 100px 100px;
+	grid-template-rows: 80px auto 80px; 
+	column-gap: 10px;
+	row-gap: 15px;
+  } */
+
+
+/* Overriding pico css for borders, margins and padding*/
+
+article {
+	margin-left: 2% !important;
+	margin-right: 2% !important;
+}
+
+nav {
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+/* End Pico stuff */
+
 .footerform {
 	padding-top: 50px;
 	text-align: center;
 }
 
-.listheader {
-	padding-top: 20px;
-}
