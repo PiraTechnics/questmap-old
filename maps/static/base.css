@@ -19,6 +19,17 @@
 	font-size: 12px;
 }
 
+.menu-bar {
+	border: hsl(195deg 85% 41%);
+	border-style: groove;
+	border-top-style: hidden;
+	border-width: 5px;
+	padding-left: 2%;
+	padding-right: 2%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
 .footer {
 	padding-top: 25px;
 }
@@ -41,8 +52,20 @@ article {
 }
 
 nav {
-	margin-left: 2%;
-	margin-right: 2%;
+	/*margin-left: 2%;
+	margin-right: 2%;*/
+}
+
+.container {
+	border-style: groove;
+	margin-top: 1%;
+}
+
+.body {
+	border-style: groove;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	padding: 1%;
 }
 
 /* End Pico stuff */

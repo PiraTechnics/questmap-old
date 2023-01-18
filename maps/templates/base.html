@@ -1,11 +1,13 @@
 {% load static %}
 <!DOCTYPE html><html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="{% static 'base.css' %}">
-<link rel="stylesheet" href="{% static 'pico/pico.min.css' %}">
-
 <head>
-	<nav>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QuestMap</title>
+	<link rel="stylesheet" href="{% static 'base.css' %}">
+	<link rel="stylesheet" href="{% static 'pico/pico.min.css' %}">
+</head>
+<body>
+	<nav class="menu-bar">
 		<ul>
 			<li><strong class="title">QuestMap</strong></li>
 		</ul>
@@ -30,10 +32,7 @@
 			{% endif %}
 		</ul>
 	</nav>
-</head>
-
-<body>
-	<main class="container"> <!--NOTE: might want to change this to something more custom -- allow for thinner margins etc -->
+	<main class="body"> <!--NOTE: might want to change this to something more custom -- allow for thinner margins etc -->
 		{% block content %}
 		{% endblock content %}
 	</main>
