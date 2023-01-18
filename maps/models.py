@@ -20,7 +20,7 @@ class Character(models.Model):
 	name = models.CharField(max_length=100)
 	description = models.TextField(default=None, null=True)
 	def __str__(self):
-		return self.char_name
+		return self.name
 
 class Map(models.Model):
 	"""A Map that we can view on a page and interact with"""
@@ -30,7 +30,7 @@ class Map(models.Model):
 	campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.map_title
+		return self.title
 
 class Location(models.Model):
 	"""A Location on a map, that we can point to"""

@@ -3,6 +3,7 @@
 
 {% load static %}
 <head>
+	<link rel="stylesheet" href="{% static 'map.css' %}">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
 	crossorigin=""/>
@@ -10,25 +11,9 @@
 	integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" 
 	crossorigin="">
 	</script>
-
-	<!--<style>
-		#map { 
-			/* formula: https://levelup.gitconnected.com/dynamic-element-scaling-in-css-7e35ed9a3914*/
-			/*height: calc(240px + (1926 - 240) * ((100vw - 500px) / (1920 - 500)));*/
-			width: 90%;
-			/*aspect-ratio: 16/9;*/
-			height: 100%;
-			margin-left: auto;
-			margin-right: auto;
-			margin-top: 2px;
-			background-color: rgb(238, 232, 225);
-			border: 5px outset rgba(212, 187, 40, 0.801);
-		}
-	</style>-->
 </head>
 
 <body>
-
 	{% for location in locations %}
 		<a hidden class="location-link" id="{{location.title}}" href="{% url 'maps:location' location.id %}">{{ location.title }}</a>
 	{% empty %}
