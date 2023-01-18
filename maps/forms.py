@@ -10,14 +10,14 @@ class CampaignForm(forms.ModelForm):
 class CharacterForm(forms.ModelForm):
 	class Meta:
 		model = Character
-		fields = ['char_name', 'char_lineage', 'char_class', 'char_level']
-		labels = {'char_name': 'Name', 'char_lineage': 'Lineage', 'char_class': 'Class', 'char_level': 'Level'}
+		fields = ['name', 'description']
+		labels = {'name': 'Name', 'description': 'Description'}
 
 class MapForm(forms.ModelForm):
 	class Meta:
 		model = Map
-		fields = ['map_title', 'map_image', 'campaign']
-		labels = {'map_title': 'Name', 'map_image': 'Image', 'campaign': 'Campaign'}
+		fields = ['title', 'image', 'campaign']
+		labels = {'title': 'Name', 'image': 'Image', 'campaign': 'Campaign'}
 
 class LocationForm(forms.ModelForm):
 	class Meta:
@@ -42,4 +42,4 @@ class NoteForm(forms.ModelForm):
 		widgets = {'content': forms.Textarea(attrs={'cols': 50, 'rows': 10})}
 
 class JoinCampaignForm(forms.Form):
-	character = forms.ChoiceField(choices=Character.objects.values_list('id', 'char_name'))
+	character = forms.ChoiceField(choices=Character.objects.values_list('id', 'name'))

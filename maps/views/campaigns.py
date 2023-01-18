@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.exceptions import PermissionDenied, BadRequest
-from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 from maps.models import Campaign, Character, Map
 from maps.forms import CampaignForm, JoinCampaignForm
@@ -52,7 +51,7 @@ def new_campaign(request):
 @permission_required('maps.view_character', 'maps.change_character', raise_exception=True)
 def join_campaign(request, camp_id):
 	campaign = Campaign.objects.get(id=camp_id)
-	char_names = Character.objects.values_list('id', 'char_name').filter(user=request.user).filter(campaign=None)
+	char_names = Character.objects.values_list('id', 'name').filter(user=request.user).filter(campaign=None)
 	
 	if request.method != 'POST':
 		form = JoinCampaignForm()

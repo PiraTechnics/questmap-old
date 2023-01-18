@@ -11,7 +11,7 @@ from maps.forms import CharacterForm
 @permission_required('maps.view_character', raise_exception=True)
 def characters(request):
 	"""Shows all of a user's characters"""
-	characters = Character.objects.filter(user=request.user).order_by('char_name') # Limit to the current user's characters
+	characters = Character.objects.filter(user=request.user).order_by('name') # Limit to the current user's characters
 	context = {'characters': characters}
 	return render(request, 'maps/characters.html', context)
 

@@ -5,7 +5,7 @@
 <p class="title">My Characters</p>
 <ul>
 	{% for character in characters %}
-		<li><a href="{% url 'maps:character' character.id %}">{{ character.char_name }}</a></li>
+		<li><a href="{% url 'maps:character' character.id %}">{{ character.name }}</a></li>
 	{% empty %}
 		<li>You don't have any characters!</li>
 	{% endfor %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
 
 from maps.models import Campaign, Map
@@ -10,7 +10,7 @@ from maps.forms import MapForm
 @permission_required('maps.view_map', raise_exception=True)
 def maps(request):
 	"""Show all the maps as a list of links"""
-	maps = Map.objects.filter(user=request.user).order_by('map_title')
+	maps = Map.objects.filter(user=request.user).order_by('title')
 	context = {'maps': maps}
 	return render(request, 'maps/maps.html', context)
 

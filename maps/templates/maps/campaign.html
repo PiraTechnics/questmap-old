@@ -9,7 +9,7 @@
     <h4 class="title">Players</h4>
         <ul>
             {% for character in characters %}
-                <li><a href="{% url 'maps:character' character.id %}">{{ character.char_name }}</a></li>
+                <li><a href="{% url 'maps:character' character.id %}">{{ character.name }}</a></li>
             {% empty %}
                 <li>There are no players in this campaign!</li>
             {% endfor %}
@@ -18,7 +18,7 @@
     <h4 class="title">Maps</h4>
         <ul>
             {% for map in maps %}
-                <li><a href="{% url 'maps:map' map.id %}">{{ map.map_title }}</a></li>
+                <li><a href="{% url 'maps:map' map.id %}">{{ map.title }}</a></li>
             {% empty %}
                 <li>There are no maps for this campaign!</li>
             {% endfor %}
