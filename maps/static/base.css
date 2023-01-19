@@ -46,27 +46,22 @@
 
 /* Overriding pico css for borders, margins and padding*/
 
-article {
+/*article {
 	margin-left: 2% !important;
 	margin-right: 2% !important;
-}
+}*/
 
 nav {
 	/*margin-left: 2%;
 	margin-right: 2%;*/
 }
 
-.container {
-	border-style: groove;
-	margin-top: 1%;
-}
-
-.body {
+/*.container-fluid{
 	border-style: groove;
 	margin-top: 1%;
 	margin-bottom: 1%;
 	padding: 1%;
-}
+}*/
 
 /* End Pico stuff */
 
