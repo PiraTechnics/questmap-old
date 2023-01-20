@@ -1,6 +1,43 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Location Type Choices
+LOCATION_TYPES = [
+	('Settlements', (
+			('city', 'City'),
+			('town', 'Town'),
+			('village', 'Village'),
+			('camp', 'Camp'),
+		)
+	),
+	('Structures', (
+			('castle', 'Castle'),
+			('fort', 'Fort'),
+			('tower', 'Tower'),
+			('ruin', 'Ruin'),
+			('house', 'House'),
+			('misc structure', 'Misc Structure'),
+		)
+	),
+	('Nature', (
+			('mountain', 'Mountain'),
+			('hill', 'Hill'),
+			('valley', 'Valley'),
+			('cavern', 'Cavern'),
+			('wood', 'Wood'),
+			('water', 'Water'),
+			('misc landform', 'Misc Landform'),
+		)
+	),
+	('Other', (
+			('point of interest', 'Point of Interest'),
+			('landmark', 'Landmark'),
+			('other', 'Other'),
+		)
+	)
+]
+# Note: Nature section might end up including a LOT more -- depends on how granular we want to define them
+
 class Campaign(models.Model):
 	"""A campaign that characters and maps are in.
 	Basically, the a representation of the instance of a game
@@ -36,6 +73,12 @@ class Location(models.Model):
 	"""A Location on a map, that we can point to"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	map = models.ForeignKey(Map, on_delete=models.CASCADE)
+	type = models.CharField(
+		max_length=25,
+		choices=LOCATION_TYPES,
+		default='other'
+	) #Options defined in top of file
+	#subtype = models.CharField() #Options depend on chosen type
 	title = models.CharField(max_length=200)
 	text = models.TextField()
 	xCoord = models.FloatField()

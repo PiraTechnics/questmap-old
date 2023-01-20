@@ -32,7 +32,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
        map_title = "blah"
 
-       """
+       """ STILL A WIP -- FILE IS PLACEHOLDER FOR NOW
         total = kwargs['total']
         prefix = kwargs['prefix']
         admin = kwargs['admin']
