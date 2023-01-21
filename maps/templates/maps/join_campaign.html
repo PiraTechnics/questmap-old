@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<body>
+<article class="creationform">
     <h3 class="title">Campaign: {{ campaign.title }}</h3>
     <p class="subtitle">{{ campaign.description }}</p>
     <p class="center">Game Master: {{ campaign.user }}</p>
@@ -12,7 +12,5 @@
         {{ form.as_p }}
         <button name="submit">Join Campaign</button>
     </form>
-</body>
+</article>
 {% endblock content %}
-
-</html>

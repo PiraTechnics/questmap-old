@@ -18,9 +18,11 @@
 			<li>There are no notes for this location.</li>
 			{% endfor %}
 		</ul>
+		{% if user == location.user %}
 		<form action="{% url 'maps:edit_location' location.id %}">
 			<input type="submit" value="Edit Location" />
 		</form>
+		{% endif %}
 	</article>
 
 	<article class="creationform">

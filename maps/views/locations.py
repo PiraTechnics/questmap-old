@@ -32,7 +32,7 @@ def location(request, location_id):
 			return redirect('maps:location', location_id=location_id)
 
 	# Render page with all notes and an empty form for submitting a new note
-	context = {'location': location, 'notes': notes, 'form': form}
+	context = {'location': location, 'notes': notes, 'form': form, 'user': request.user}
 	return render(request, 'maps/location.html', context)
 
 @login_required
@@ -64,8 +64,6 @@ def new_location(request, map_id):
 @login_required
 @permission_required('maps.change_location', 'maps.delete_location', raise_exception=True)
 def edit_location(request, location_id):
-
-
 	# Ensure User owns the location (by extension the map) we are editing/deleting
 	location = get_object_or_404(Location, id=location_id)
 	if(location.user == request.user):

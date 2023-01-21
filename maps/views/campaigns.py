@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, BadRequest
 
 from maps.models import Campaign, Character, Map
 from maps.forms import CampaignForm, JoinCampaignForm
+from maps.utils import is_player, is_GM
 
 # All views for Campaign
 
@@ -13,7 +14,16 @@ def campaigns(request):
 	"""Show all of the user's campaigns"""
 	#Note: this will intially ownly apply to the owner of a campaign
 	#We will add functionality for players to see their campaigns after
-	campaigns = Campaign.objects.filter(user=request.user)
+	if is_GM(request):
+		campaigns = Campaign.objects.filter(user=request.user)
+	elif is_player(request):
+		characters = Character.objects.filter(user=request.user)
+		camp_keys = characters.values_list('campaign')
+		# get each campaign that the player has a character in
+		campaigns = Campaign.objects.filter(id__in=camp_keys)
+	else:
+		raise BadRequest
+
 	context = {'campaigns': campaigns}
 	return render(request, 'maps/campaigns.html', context)
 
@@ -60,7 +70,7 @@ def join_campaign(request, camp_id):
 	else:
 		# POST data submitted - process it
 		form = JoinCampaignForm(request.POST)
-		if form.is_valid():
+		if form.is_valid(): #This is giving some odd error behavior -- still sort of works, but neess fixing
 			character = form.cleaned_data['character']
 			pc_entry = Character.objects.get(id=character)
 			pc_entry.campaign = campaign
