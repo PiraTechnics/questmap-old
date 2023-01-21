@@ -22,9 +22,11 @@ class MapForm(forms.ModelForm):
 class LocationForm(forms.ModelForm):
 	class Meta:
 		model = Location
-		fields = ['title', 'text', 'xCoord', 'yCoord']
+		fields = ['title', 'size', 'type', 'text', 'xCoord', 'yCoord']
 		labels = {
 			'title': 'Name',
+			'size': 'Size',
+			'type': 'Type',
 			'text': 'Description',
 			'xCoord': 'X Coordinate',
 			'yCoord': 'Y Coordinate'

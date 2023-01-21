@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-	
-<p class="title">My Characters</p>
-<ul>
-	{% for character in characters %}
+
+<article class="contentview">
+	<p class="title">My Characters</p>
+	<ul>
+		{% for character in characters %}
 		<li><a href="{% url 'maps:character' character.id %}">{{ character.name }}</a></li>
-	{% empty %}
+		{% empty %}
 		<li>You don't have any characters!</li>
-	{% endfor %}
-</ul>
+		{% endfor %}
+	</ul>
 
-<a role="button" href="{% url 'maps:new_character' %}">New Character</a>
-
+	<a role="button" href="{% url 'maps:new_character' %}">New Character</a>
+</article>
 {% endblock content %}

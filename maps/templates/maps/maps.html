@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<p class="title">My Maps</p>
-<ul>
-	{% for map in maps %}
+<article class="contentview">
+	<p class="title">My Maps</p>
+	<ul>
+		{% for map in maps %}
 		<li><a href="{% url 'maps:map' map.id %}">{{ map.title }}</a></li>
-	{% empty %}
+		{% empty %}
 		<li>No maps have been added yet.</li>
-	{% endfor %}
-</ul>
+		{% endfor %}
+	</ul>
 
-<a role="button" href="{% url 'maps:new_map' %}">New Map</a>
-
+	<a role="button" href="{% url 'maps:new_map' %}">New Map</a>
+</article>
 {% endblock content %}

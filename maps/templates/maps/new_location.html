@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Add new location to <a href="{% url 'maps:map' map.id %}">{{ map.title }}</a>:</h3>
-<article class="grid">
+<article class="creationform">
 	<form action="{% url 'maps:new_location' map.id %}" method='post'>
+		<h3>Add new location to <a href="{% url 'maps:map' map.id %}">{{ map.title }}</a>:</h3>
 		{% csrf_token %}
 		{{ form }}
 		<button name="submit">Add Location</button>

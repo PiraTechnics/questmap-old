@@ -2,31 +2,35 @@
 {% block content %}
 
 <body>
-	<h1>Location: {{ location.title }}</h1>
-	<p>{{ location.text }}</p>
-
-	<h3 class="listheader">Notes:</h3>
-	<ul>
-		{% for note in notes %}
+	<article class="contentview">
+		<h1>Location: {{ location.title }}</h1>
+		<p><strong>{{ location.size | title }} {{ location.type | title }}</strong></p>
+		<p>{{ location.text }}</p>
+	
+		<h3 class="listheader">Notes:</h3>
+		<ul>
+			{% for note in notes %}
 			<li>
 				<p>{{ note.author }}, {{ note.created|date:'M d, Y H:i' }}</p>
 				<p>{{ note.content|linebreaks }}</p>
 			</li>
-		{% empty %}
-		<li>There are no notes for this location.</li>
-	{% endfor %}
-	</ul>
+			{% empty %}
+			<li>There are no notes for this location.</li>
+			{% endfor %}
+		</ul>
+		<form action="{% url 'maps:edit_location' location.id %}">
+			<input type="submit" value="Edit Location" />
+		</form>
+	</article>
 
-	<h3 class="footerform">Add New Note</h3>
-	<form action="{% url 'maps:location' location.id %}" method='post'>
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button name="submit">Add Note</button>
-	</form>
-
-    <form class="footerform" action="{% url 'maps:edit_location' location.id %}">
-        <input type="submit" value="Edit Location" />
-    </form>
+	<article class="creationform">
+		<form action="{% url 'maps:location' location.id %}" method='post'>
+			<h3>Add New Note</h3>
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button name="submit">Add Note</button>
+		</form>
+	</article>
 
 </body>
 

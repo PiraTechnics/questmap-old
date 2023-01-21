@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Add new Map:</h3>
-
-<form action="{% url 'maps:new_map' %}" method='post' enctype='multipart/form-data'>
-	{% csrf_token %}
-	{{ form.as_p }}
-	<button name="submit">Upload Map</button>
-</form>
+<article class="creationform">
+	<form action="{% url 'maps:new_map' %}" method='post' enctype='multipart/form-data'>
+		<h3>Add new Map:</h3>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button name="submit">Upload Map</button>
+	</form>
+</article>
 	
 {% if map_obj %}
 	<h3>Sucessfully Uploaded: {{ map_obj.map_title }}</h3>

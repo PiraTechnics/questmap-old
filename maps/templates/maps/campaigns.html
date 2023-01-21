@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p class="title">My Campaigns</p>
-<ul>
-	{% for campaign in campaigns %}
+<article class="contentview">
+	<p class="title">My Campaigns</p>
+	<ul>
+		{% for campaign in campaigns %}
 		<li><a href="{% url 'maps:campaign' campaign.id %}">{{ campaign.title }}</a></li>
-	{% empty %}
+		{% empty %}
 		<li>You don't have any Campaigns!</li>
-	{% endfor %}
-</ul>
+		{% endfor %}
+	</ul>
 
-<a role="button" href="{% url 'maps:new_campaign' %}">New Campaign</a>
+	<a role="button" href="{% url 'maps:new_campaign' %}">New Campaign</a>
+</article>
 
 {% endblock content %}
 

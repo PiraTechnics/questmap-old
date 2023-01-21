@@ -38,6 +38,15 @@ LOCATION_TYPES = [
 ]
 # Note: Nature section might end up including a LOT more -- depends on how granular we want to define them
 
+LOCATION_SIZES = (
+	('tiny', 'Tiny'),
+	('small', 'Small'),
+	('medium', 'Medium'),
+	('large', 'Large'),
+  	('huge', 'Huge'),
+    ('gigantic', 'Gigantic'),
+)
+
 class Campaign(models.Model):
 	"""A campaign that characters and maps are in.
 	Basically, the a representation of the instance of a game
@@ -73,12 +82,14 @@ class Location(models.Model):
 	"""A Location on a map, that we can point to"""
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	map = models.ForeignKey(Map, on_delete=models.CASCADE)
+	size = models.CharField(
+		max_length=10,
+		choices = LOCATION_SIZES
+	)
 	type = models.CharField(
 		max_length=25,
-		choices=LOCATION_TYPES,
-		default='other'
-	) #Options defined in top of file
-	#subtype = models.CharField() #Options depend on chosen type
+		choices=LOCATION_TYPES
+	)
 	title = models.CharField(max_length=200)
 	text = models.TextField()
 	xCoord = models.FloatField()

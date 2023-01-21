@@ -2,35 +2,35 @@
 
 {% block content %}
 <body>
-    <div class="title">
-    <h3>{{ character.name }}</h3>
-    </div>
-    <div class="center">
-    <p>{{ character.description }}</p>
-    <p>Campaign: 
-		{% if character.campaign != null %}
-		<a href="{% url 'maps:campaign' character.campaign.id %}">{{ character.campaign }}</a>
-		{% else %}
-		None
-		{% endif %}
-	</p>
-    <p>Played by {{ character.user }}</p>
+	<article class="contentview">
+		<h2>{{ character.name }}</h2>
+		<p>{{ character.description }}</p>
+		<p>Campaign:
+			{% if character.campaign != null %}
+			<a href="{% url 'maps:campaign' character.campaign.id %}">{{ character.campaign }}</a>
+			{% else %}
+			None
+			{% endif %}
+		</p>
+		<p>Played by <u>{{ character.user }}</u></p>
+	</article>
 
-	<h3 class="listheader">Notes:</h3>
-	<ul>
-		{% for note in notes %}
+	<article class="contentview">
+		<h3 class="listheader">Notes:</h3>
+		<ul>
+			{% for note in notes %}
 			<li>
 				<p>{{ note.location }}, {{ note.created|date:'M d, Y H:i' }}</p>
 				<p>{{ note.content|linebreaks }}</p>
 			</li>
-		{% empty %}
-		<li>This Character has no notes!</li>
-	{% endfor %}
-    </div>
+			{% empty %}
+			<li>This Character has no notes!</li>
+			{% endfor %}
 
-	<form class="footerform" action="{% url 'maps:edit_character' character.id %}">
-        <input type="submit" value="Edit Character" />
-    </form>
+			<form class="footerform" action="{% url 'maps:edit_character' character.id %}">
+				<input type="submit" value="Edit Character" />
+			</form>
+	</article>
 
 </body>
 {% endblock content %}
