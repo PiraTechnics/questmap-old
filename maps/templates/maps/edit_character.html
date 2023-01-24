@@ -2,14 +2,15 @@
 
 {% block content %}
 <body>
-    <h4> Edit Character </h4>
-    <form action="{% url 'maps:edit_character' character.id %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="update">Update Character</button>
-        <button name="delete" onclick="return confirm('Are you sure you want to delete this?')">Delete Character</button>
-    </form>
+    <article class="creationform">
+        <h4> Edit Character </h4>
+        <form action="{% url 'maps:edit_character' character.id %}" method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="update">Update Character</button>
+            <button name="delete" onclick="return confirm('Are you sure you want to delete this?')">Delete
+                Character</button>
+        </form>
+    </article>
 </body>
 {% endblock content %}
-
-</html>

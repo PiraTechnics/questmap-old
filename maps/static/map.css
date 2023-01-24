@@ -8,6 +8,12 @@
     border: 5px groove hsl(195deg 85% 41%);
 }
 
+/*.map-container {
+    height: auto;
+    width: auto;
+    overflow: auto;
+}*/
+
 [role=button] {
     all: initial;
 }

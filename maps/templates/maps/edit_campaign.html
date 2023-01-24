@@ -2,14 +2,15 @@
 
 {% block content %}
 <body>
-    <h4> Edit Campaign </h4>
-    <form action="{% url 'maps:edit_campaign' campaign.id %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="update">Update Campaign</button>
-        <button name="delete" onclick="return confirm('Are you sure you want to delete this?')">Delete Campaign</button>
-    </form>
+    <article class="creationform">
+        <h4> Edit Campaign </h4>
+        <form action="{% url 'maps:edit_campaign' campaign.id %}" method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="update">Update Campaign</button>
+            <button name="delete" onclick="return confirm('Are you sure you want to delete this?')">Delete
+                Campaign</button>
+        </form>
+    </article>
 </body>
 {% endblock content %}
-
-</html>

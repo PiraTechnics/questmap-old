@@ -13,6 +13,9 @@
 			{% endif %}
 		</p>
 		<p>Played by <u>{{ character.user }}</u></p>
+		<form class="footerform" action="{% url 'maps:edit_character' character.id %}">
+			<input type="submit" value="Edit Character" />
+		</form>
 	</article>
 
 	<article class="contentview">
@@ -26,12 +29,7 @@
 			{% empty %}
 			<li>This Character has no notes!</li>
 			{% endfor %}
-
-			<form class="footerform" action="{% url 'maps:edit_character' character.id %}">
-				<input type="submit" value="Edit Character" />
-			</form>
 	</article>
-
 </body>
 {% endblock content %}
 

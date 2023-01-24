@@ -69,6 +69,7 @@ nav {
 	margin-top: auto;
 	margin-left: auto;
 	margin-right: auto;
+	min-width: 50%;
 	max-width: fit-content;
 }
 

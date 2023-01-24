@@ -2,35 +2,35 @@
 
 {% block content %}
 <body>
-    <h3 class="title">Campaign: {{ campaign.title }}</h3>
-    <p class="subtitle">{{ campaign.description }}</p>
-    <p class="center">Game Master: {{ campaign.user }}</p>
+    <article class="contentview">
+        <h3 class="title">Campaign: {{ campaign.title }}</h3>
+        <p class="subtitle">{{ campaign.description }}</p>
+        <p class="center">Game Master: {{ campaign.user }}</p>
 
-    <h4 class="title">Players</h4>
+        <h4 class="title">Players</h4>
         <ul>
             {% for character in characters %}
-                <li><a href="{% url 'maps:character' character.id %}">{{ character.name }}</a></li>
+            <li><a href="{% url 'maps:character' character.id %}">{{ character.name }}</a></li>
             {% empty %}
-                <li>There are no players in this campaign!</li>
+            <li>There are no players in this campaign!</li>
             {% endfor %}
         </ul>
 
-    <h4 class="title">Maps</h4>
+        <h4 class="title">Maps</h4>
         <ul>
             {% for map in maps %}
-                <li><a href="{% url 'maps:map' map.id %}">{{ map.title }}</a></li>
+            <li><a href="{% url 'maps:map' map.id %}">{{ map.title }}</a></li>
             {% empty %}
-                <li>There are no maps for this campaign!</li>
+            <li>There are no maps for this campaign!</li>
             {% endfor %}
         </ul>
-    <form class="footerform" action="{% url 'maps:join_campaign' campaign.id %}">
-        <input type="submit" value="Join This Campaign" />
-    </form>
-    
-    <form class="footerform" action="{% url 'maps:edit_campaign' campaign.id %}">
-        <input type="submit" value="Edit Campaign" />
-    </form>
-</body>
-{% endblock content %}
+        <form class="footerform" action="{% url 'maps:join_campaign' campaign.id %}">
+            <input type="submit" value="Join This Campaign" />
+        </form>
 
-</html>
+        <form class="footerform" action="{% url 'maps:edit_campaign' campaign.id %}">
+            <input type="submit" value="Edit Campaign" />
+        </form>
+</body>
+</article>
+{% endblock content %}
