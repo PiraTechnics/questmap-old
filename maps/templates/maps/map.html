@@ -4,18 +4,15 @@
 {% load static %}
 
 <head>
-	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'map.css' %}">
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-		integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 
-	<!-- Include the Quill library -->
+	<!-- Quill for inline text editing -->
+	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-	<!-- Include the Leaflet library -->
-	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin="">
-	</script>
+	<!-- Leaflet for Interactive Maps -->
+	<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+	<script src="{% static 'leaflet/leaflet.js' %}"></script>
 </head>
 
 {% for location in locations %}
@@ -37,9 +34,56 @@
 		const map_url = data.mapUrl;
 		const map_height = data.mapHeight; //height of map in px
 		const map_width = data.mapWidth; //width of map in px
-		window.onload = initMap();
+		
+		window.onload = function() {
+			var zooms = setupZoomLevels();
 
-		function initMap() {
+			//Initialize Leaflet Map
+			var map_bounds = [[0, 0], [map_height, map_width]];
+			var center = [map_height / 2, map_width / 2];
+			var map = L.map('map', {
+				crs: L.CRS.Simple,
+				maxBounds: map_bounds,
+				center: center,
+				maxZoom: zooms[1],
+				minZoom: zooms[0],
+				zoomSnap: 0.5,
+				zoomDelta: 0.5,
+				wheelPxPerZoomLevel: 120,
+				//scrollWheelZoom: false,
+				attributionControl: false,
+				maxBoundsViscosity: 1,
+				//contextMenu: true,
+				//contextMenuWidth: 140,
+				zoomControl: false, //Disable zoom controls so we can reposition it
+			});
+
+			// Customize Leaflet Map controls, placement
+			L.control.zoom({
+				position: 'topright'
+			}).addTo(map);
+
+			// Overlay Map Image
+			L.imageOverlay(map_url, map_bounds).addTo(map);
+			map.fitBounds(map_bounds);
+			//map.setView(center, zoomMin + 0.5)
+
+			// Overlay Location Markers
+			setupLocations(map);
+
+			// Redirect to new_location on map click where there is NOT a marker (NOTE: do this only for GM's)
+			map.on('click', newLocation);
+			
+			// Automatically resize map and zoom level when window is resized
+			window.onresize = resizeMap(event);
+		}
+
+		// Helper Functions (refactor to map.js eventually)
+		function resizeMap(event) {
+			//Note: Implement this and call it on window resize later on
+		}
+
+		function setupZoomLevels() {
 			//Get Map Container and Browser Window Dimensions
 			var mapDiv = document.getElementById("map");
 			//var windowW = document.documentElement.clientWidth;
@@ -50,14 +94,12 @@
 				scaleFactor = 0,
 				zoomMin = 0,
 				zoomMax = 0;
-
 				
 			//Scale Aspect Ratio for div to reflect image dimensions
 			mapDiv.style.aspectRatio = imageAspectR;
 			
 			// Scale down Image if it is bigger than our screen
 			// Keep looping until the image fits within the screen
-			// Add a tally for how many zooms we can do
 			while (windowW < scaledImageW) {
 				scaledImageW /= 1.5; //Scale down -- might need to revisit this later
 				scaleFactor++;
@@ -73,40 +115,13 @@
 				zoomMax = 1;
 			}
 
-			//Initialize Leaflet Map
-			var map_bounds = [[0, 0], [map_height, map_width]];
-			var center = [map_height / 2, map_width / 2];
-			var map = L.map('map', {
-				crs: L.CRS.Simple,
-				maxBounds: map_bounds,
-				center: center,
-				maxZoom: zoomMax,
-				minZoom: zoomMin,
-				zoomSnap: 0.5,
-				zoomDelta: 0.5,
-				wheelPxPerZoomLevel: 120,
-				//scrollWheelZoom: false,
-				attributionControl: false,
-				maxBoundsViscosity: 1,
-				//contextMenu: true,
-				//contextMenuWidth: 140,
-				zoomControl: false, //Disable zoom controls so we can reposition it
-			});
+			return [zoomMin, zoomMax];
+		}
 
-			// Customize Leaflet Map controls
-			L.control.zoom({
-				position: 'topright'
-			}).addTo(map);
-
-			// Overlay Map Image
-			L.imageOverlay(map_url, map_bounds).addTo(map);
-			
-			
-			map.fitBounds(map_bounds);
-			//map.setView(center, zoomMin + 0.5)
-
-			// Load locations from view and set markers on map
+		function setupLocations(map) {
+			//Grab list of locations tied to this map
 			const locations = JSON.parse(document.getElementById("map_locations").textContent);
+			
 			locations.forEach(location => {
 				//Create marker at each location's coordinates
 				var marker = L.marker(
@@ -114,6 +129,13 @@
 					title = location.title,
 					id = location.id
 				).addTo(map).bindTooltip(title);
+
+				//Set link to each marker's location on user click
+				var markerUrl = document.getElementById(location.title);
+				marker.on('click', function(){
+					//Generate URL based on location id
+					window.location.href = markerUrl;
+				});
 
 				/* -- Inline editor Quill
 				var container = '<div class="editor"></div>';
@@ -139,26 +161,7 @@
 				})
 				*/
 
-				//get the link to each location (a element later in doc)
-				var markerUrl = document.getElementById(location.title);
-
-				
-				marker.on('click', function(){
-					//Generate URL based on location id
-					window.location.href = markerUrl;
-				});
 			});
-
-			// Redirect to new_location on map click
-			map.on('click', newLocation);
-		}
-
-		// Helper Functions (refactor to map.js eventually)
-		function resizeMap(coordinates) {
-			//Note: Implement this and call it on window resize later on
-		}
-
-		function getScaleFactor(mapDiv) {
 		}
 
 		function newLocation(e) {
