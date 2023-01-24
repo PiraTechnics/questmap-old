@@ -23,8 +23,9 @@
 	location.title }}</a>
 {% empty %}
 {% endfor %}
-
 <div id="map"></div>
+
+
 {{ locations|json_script:"map_locations" }}
 
 <script type="text/javascript" defer data-map-url='{{ map.image.url }}' data-map-height='{{ map.image.height }}'
@@ -34,14 +35,15 @@
 		const data = document.currentScript.dataset;
 		const map_id = data.mapId;
 		const map_url = data.mapUrl;
-		const map_height = data.mapHeight;
-		const map_width = data.mapWidth;
+		const map_height = data.mapHeight; //height of map in px
+		const map_width = data.mapWidth; //width of map in px
 		window.onload = initMap();
 
 		function initMap() {
 			//Get Map Container and Browser Window Dimensions
 			var mapDiv = document.getElementById("map");
-			var windowW = document.documentElement.clientWidth;
+			//var windowW = document.documentElement.clientWidth;
+			var windowW = mapDiv.clientWidth;
 			//console.log("Window Width: " + windowW);
 			var scaledImageW = map_width,
 				imageAspectR = map_width / map_height,
@@ -49,28 +51,26 @@
 				zoomMin = 0,
 				zoomMax = 0;
 
+				
+			//Scale Aspect Ratio for div to reflect image dimensions
+			mapDiv.style.aspectRatio = imageAspectR;
+			
 			// Scale down Image if it is bigger than our screen
+			// Keep looping until the image fits within the screen
+			// Add a tally for how many zooms we can do
 			while (windowW < scaledImageW) {
 				scaledImageW /= 1.5; //Scale down -- might need to revisit this later
 				scaleFactor++;
 			}
-			//console.log("Image scaled width: " + scaledImageW);
 
 			//don't allow a scaleFactor greater than 3
 			if (scaleFactor >= 3) {
-				zoomMin = -2;
-				zoomMax = 1;
+				zoomMin = -1.5;
+				zoomMax = .5;
 			}
 			else {
 				zoomMin = -1;
 				zoomMax = 1;
-			}
-
-			//Scale Aspect Ratio for div to reflect image dimensions
-			mapDiv.style.aspectRatio = imageAspectR;
-			if (scaledImageW < windowW) {
-				//if image is smaller than screen, set it to same size
-				//mapDiv.style.width = scaledImageW;
 			}
 
 			//Initialize Leaflet Map
@@ -84,13 +84,26 @@
 				minZoom: zoomMin,
 				zoomSnap: 0.5,
 				zoomDelta: 0.5,
+				wheelPxPerZoomLevel: 120,
+				//scrollWheelZoom: false,
+				attributionControl: false,
+				maxBoundsViscosity: 1,
+				//contextMenu: true,
+				//contextMenuWidth: 140,
+				zoomControl: false, //Disable zoom controls so we can reposition it
 			});
 
+			// Customize Leaflet Map controls
+			L.control.zoom({
+				position: 'topright'
+			}).addTo(map);
+
+			// Overlay Map Image
 			L.imageOverlay(map_url, map_bounds).addTo(map);
-			//map.fitBounds(map_bounds);
-			map.setView(center, zoomMin + 1)
-			//console.log("Map bounds: " + map_bounds);
-			//console.log("height: " + map_height + " width: " + map_width);
+			
+			
+			map.fitBounds(map_bounds);
+			//map.setView(center, zoomMin + 0.5)
 
 			// Load locations from view and set markers on map
 			const locations = JSON.parse(document.getElementById("map_locations").textContent);
@@ -143,6 +156,9 @@
 		// Helper Functions (refactor to map.js eventually)
 		function resizeMap(coordinates) {
 			//Note: Implement this and call it on window resize later on
+		}
+
+		function getScaleFactor(mapDiv) {
 		}
 
 		function newLocation(e) {
