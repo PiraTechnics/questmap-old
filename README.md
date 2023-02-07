@@ -22,7 +22,8 @@ To set up this project on a Linux environment, do the following:
 4. Create a .env file with a dummy secret key:
 	 echo "SECRET_KEY=dummykey" > .env
 
-5. Create the database:
+5. Create the database. NOTE: you will have to change a line in forms.py first, then migrate, then change it back.
+I have no idea why you need to do this, but it breaks otherwise:
 	python manage.py migrate
 
 6. Generate a unique secret key using django's shell and replace dummy key with output:

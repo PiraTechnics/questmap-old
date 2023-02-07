@@ -44,4 +44,6 @@ class NoteForm(forms.ModelForm):
 		widgets = {'content': forms.Textarea(attrs={'cols': 50, 'rows': 10})}
 
 class JoinCampaignForm(forms.Form):
+	# Note: Comment out this line and uncomment the following when setting up new env, then change back after migration
 	character = forms.ChoiceField(choices=Character.objects.values_list('id', 'name'))
+	# character = forms.CheckboxInput()
